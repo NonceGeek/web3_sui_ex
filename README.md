@@ -1,6 +1,6 @@
 # Web3MoveEx
 
-**TODO: Add description**
+Move(Starcoin) SDK impl in elixir!
 
 ## Installation
 
