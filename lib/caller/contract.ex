@@ -42,6 +42,18 @@ defmodule Web3MoveEx.Caller.Contract do
   end
 
   @doc """
+  Contract call_v2
+  """
+  def call_v2(endpoint, params) do
+    body =
+      @class
+      |> Caller.build_method("call_v2")
+      |> HTTP.json_rpc(params)
+
+    HTTP.post(endpoint, body)
+  end
+
+  @doc """
   "0x1::Account::Balance<0x1::STC::STC>"
   """
   def build_resource_path(addr, module, struct) do

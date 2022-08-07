@@ -28,8 +28,41 @@ defmodule Web3MoveEx.Caller.ContractTest do
     end)
 
     endpoint = Web3MoveEx.Constant.endpoint(:local)
-    {:ok, result} = Web3MoveEx.Caller.Contract.get_code(endpoint)
+    {:ok, data} = Web3MoveEx.Caller.Contract.get_code(endpoint)
 
-    assert result = result["result"]
+    assert ^result = data["result"]
+  end
+
+  test "call_v2" do
+    Web3MoveEx.HTTP.Mox
+    |> expect(:json_rpc, fn method, id ->
+      %{method: method, jsonrpc: "2.0", id: id}
+    end)
+    |> expect(:post, fn _url, _json ->
+      body = %{
+        "id" => 1,
+        "jsonrpc" => "2.0",
+        "result" => [
+          true
+        ]
+      }
+
+      {:ok, body}
+    end)
+
+    payload = %{
+      "function_id" => "0xb987F1aB0D7879b2aB421b98f96eFb44::MerkleDistributor2::is_claimd",
+      "type_args" => ["0x00000000000000000000000000000001::STC::STC"],
+      "args" => [
+        "0x7beb045f2dea2f7fe50ede88c3e19a72",
+        1_629_190_460,
+        "0xxxxxxxxxxxx",
+        0
+      ]
+    }
+
+    endpoint = Web3MoveEx.Constant.endpoint(:local)
+    {:ok, result} = Web3MoveEx.Caller.Contract.call_v2(endpoint, [payload])
+    assert [true] = result["result"]
   end
 end
