@@ -30,7 +30,19 @@ defmodule Web3MoveEx.Caller.Contract do
   end
 
   @doc """
-    "0x1::Account::Balance<0x1::STC::STC>"
+  Contract get code
+  """
+  def get_code(endpoint) do
+    body =
+      @class
+      |> Caller.build_method("get_code")
+      |> HTTP.json_rpc(["0x1::Account"])
+
+    HTTP.post(endpoint, body)
+  end
+
+  @doc """
+  "0x1::Account::Balance<0x1::STC::STC>"
   """
   def build_resource_path(addr, module, struct) do
     "#{addr}::#{module}::#{struct}"
