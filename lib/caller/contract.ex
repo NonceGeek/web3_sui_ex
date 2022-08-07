@@ -32,11 +32,11 @@ defmodule Web3MoveEx.Caller.Contract do
   @doc """
   Contract get code
   """
-  def get_code(endpoint) do
+  def get_code(endpoint, params) do
     body =
       @class
       |> Caller.build_method("get_code")
-      |> HTTP.json_rpc(["0x1::Account"])
+      |> HTTP.json_rpc(params)
 
     HTTP.post(endpoint, body)
   end

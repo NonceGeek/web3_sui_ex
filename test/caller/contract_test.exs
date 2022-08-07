@@ -27,8 +27,12 @@ defmodule Web3MoveEx.Caller.ContractTest do
       {:ok, body}
     end)
 
+    params = [
+      "0x1::Account"
+    ]
+
     endpoint = Web3MoveEx.Constant.endpoint(:local)
-    {:ok, data} = Web3MoveEx.Caller.Contract.get_code(endpoint)
+    {:ok, data} = Web3MoveEx.Caller.Contract.get_code(endpoint, params)
 
     assert ^result = data["result"]
   end
