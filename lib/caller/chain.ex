@@ -1,9 +1,10 @@
 defmodule Web3MoveEx.Caller.Chain do
-  alias Web3MoveEx.Caller
-
   @moduledoc """
-    api about chain
+  api about chain
   """
+
+  alias Web3MoveEx.{Caller, Http}
+
   @class "chain"
   def get_id(endpoint, id \\ 100) do
     body =

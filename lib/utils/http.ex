@@ -1,4 +1,4 @@
-defmodule Http do
+defmodule Web3MoveEx.Http do
   @moduledoc """
     the encapsulation of http
   """
