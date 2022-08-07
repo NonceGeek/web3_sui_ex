@@ -74,7 +74,7 @@ defmodule Web3MoveEx.HTTPImpl do
   defp do_post(url, body, retries) do
     url
     |> HTTPoison.post(
-      Jason.encode!(body),
+      Poison.encode!(body),
       [{"Content-Type", "application/json"}]
     )
     |> handle_response()
@@ -112,7 +112,7 @@ defmodule Web3MoveEx.HTTPImpl do
   # normal
   defp handle_response({:ok, %HTTPoison.Response{status_code: status_code, body: body}})
        when status_code in 200..299 do
-    case Jason.decode(body) do
+    case Poison.decode(body) do
       {:ok, json_body} ->
         {:ok, json_body}
 
