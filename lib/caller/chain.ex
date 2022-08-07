@@ -1,5 +1,6 @@
 defmodule Web3MoveEx.Caller.Chain do
   alias Web3MoveEx.Caller
+
   @moduledoc """
     api about chain
   """
@@ -9,6 +10,7 @@ defmodule Web3MoveEx.Caller.Chain do
       @class
       |> Caller.build_method("id")
       |> Http.json_rpc(id)
+
     Http.post(endpoint, body)
   end
 
@@ -17,6 +19,7 @@ defmodule Web3MoveEx.Caller.Chain do
       @class
       |> Caller.build_method("info")
       |> Http.json_rpc(id)
+
     Http.post(endpoint, body)
   end
 
@@ -25,10 +28,10 @@ defmodule Web3MoveEx.Caller.Chain do
       @class
       |> Caller.build_method("get_block_by_number")
       |> Http.json_rpc([num])
+
     Http.post(endpoint, body)
   end
 
   # TODO: impl others in
   # > https://www.postman.com/starcoinorg/workspace/starcoin-blockchain-api
-
 end
