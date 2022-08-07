@@ -3,7 +3,7 @@ defmodule Web3MoveEx.Caller.Contract do
   api about contract
   """
 
-  alias Web3MoveEx.{Caller, Http}
+  alias Web3MoveEx.{Caller, HTTP}
 
   @class "contract"
 
@@ -24,9 +24,9 @@ defmodule Web3MoveEx.Caller.Contract do
     body =
       @class
       |> Caller.build_method("get_resource")
-      |> Http.json_rpc([address, resource_path])
+      |> HTTP.json_rpc([address, resource_path])
 
-    Http.post(endpoint, body)
+    HTTP.post(endpoint, body)
   end
 
   @doc """
