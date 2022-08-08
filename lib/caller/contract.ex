@@ -30,13 +30,14 @@ defmodule Web3MoveEx.Caller.Contract do
   end
 
   @doc """
-  Contract get code
+    Contract get code:
+      get_code( "http://localhost:9851", "0x1::Account")
   """
-  def get_code(endpoint, params) do
+  def get_code(endpoint, module_path) do
     body =
       @class
       |> Caller.build_method("get_code")
-      |> HTTP.json_rpc(params)
+      |> HTTP.json_rpc([module_path])
 
     HTTP.post(endpoint, body)
   end
@@ -44,7 +45,7 @@ defmodule Web3MoveEx.Caller.Contract do
   @doc """
     Contract call_v2.
     Metion:
-    0x01) func id could be built by `Caller.build_resource_path`
+    0x01) func id could be built by `Caller.build_namespace`
     0x02) hex can be tranfered into starcoin_bytes in type_translator
     example:
       Web3MoveEx.Caller.Contract.call_v2(
