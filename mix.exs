@@ -4,11 +4,23 @@ defmodule Web3MoveEx.MixProject do
   def project do
     [
       app: :web3_move_ex,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      version: "0.0.1",
+      description: "cool sdk for Chains using MOVE, such as: starcoin, aptos, sui",
+      package: package(),
     ]
+  end
+
+  defp package do
+    [
+     files: ["lib", "mix.exs", "README.md"],
+     maintainers: ["leeduckgo"],
+     licenses: ["Apache 2.0"],
+     links: %{"GitHub" => "https://github.com/WeLightProject/web3_move_ex"}
+     ]
   end
 
   # Run "mix help compile.app" to learn about applications.
@@ -23,7 +35,9 @@ defmodule Web3MoveEx.MixProject do
     [
       {:httpoison, "~> 1.8"},
       {:poison, "~> 3.1"},
-      {:mox, "~> 1.0", only: :test}
+      {:mox, "~> 1.0", only: :test},
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:earmark, ">= 0.0.0", only: :dev}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]

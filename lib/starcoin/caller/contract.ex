@@ -1,9 +1,10 @@
-defmodule Web3MoveEx.Caller.Contract do
+defmodule Web3MoveEx.Starcoin.Caller.Contract do
   @moduledoc """
   api about contract
   """
 
-  alias Web3MoveEx.{Caller, HTTP}
+  alias Web3MoveEx.HTTP
+  alias Web3MoveEx.Starcoin.Caller
 
   @class "contract"
 

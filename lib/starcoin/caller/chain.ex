@@ -1,9 +1,10 @@
-defmodule Web3MoveEx.Caller.Chain do
+defmodule Web3MoveEx.Starcoin.Caller.Chain do
   @moduledoc """
   api about chain
   """
 
-  alias Web3MoveEx.{Caller, HTTP}
+  alias Web3MoveEx.HTTP
+  alias Web3MoveEx.Starcoin.Caller
 
   @class "chain"
 
