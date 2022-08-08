@@ -2,6 +2,10 @@
 
 Move(Starcoin) SDK impl in elixir!
 
+See the using example in:
+
+> https://github.com/WeLightProject/move_sdk_ex_liveview_example
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
@@ -10,7 +14,7 @@ by adding `web3_move_ex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:web3_move_ex, "~> 0.1.0"}
+    {:web3_move_ex, "~> 0.0.2"}
   ]
 end
 ```
