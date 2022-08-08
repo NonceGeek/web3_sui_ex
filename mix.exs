@@ -4,11 +4,10 @@ defmodule Web3MoveEx.MixProject do
   def project do
     [
       app: :web3_move_ex,
-      version: "0.1.1",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      version: "0.0.1",
+      version: "0.0.2",
       description: "cool sdk for Chains using MOVE, such as: starcoin, aptos, sui",
       package: package(),
     ]
