@@ -114,7 +114,7 @@ defmodule Web3MoveEx.HTTPImpl do
        when status_code in 200..299 do
     case Poison.decode(body) do
       {:ok, json_body} ->
-        {:ok, json_body}
+        {:ok, ExStructTranslator.to_atom_struct(json_body)}
 
       {:error, payload} ->
         Logger.error("Reason: #{inspect(payload)}")

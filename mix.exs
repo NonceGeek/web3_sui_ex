@@ -7,7 +7,7 @@ defmodule Web3MoveEx.MixProject do
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      version: "0.0.2",
+      version: "0.0.3",
       description: "cool sdk for Chains using MOVE, such as: starcoin, aptos, sui",
       package: package(),
     ]
@@ -35,6 +35,7 @@ defmodule Web3MoveEx.MixProject do
       {:httpoison, "~> 1.8"},
       {:poison, "~> 3.1"},
       {:mox, "~> 1.0", only: :test},
+      {:ex_struct_translator, "~> 0.1.1"},
       {:ex_doc, ">= 0.0.0", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev}
       # {:dep_from_hexpm, "~> 0.3.0"},

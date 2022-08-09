@@ -14,7 +14,7 @@ by adding `web3_move_ex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:web3_move_ex, "~> 0.0.2"}
+    {:web3_move_ex, "~> 0.0.3"}
   ]
 end
 ```
