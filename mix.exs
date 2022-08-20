@@ -9,17 +9,17 @@ defmodule Web3MoveEx.MixProject do
       deps: deps(),
       version: "0.0.3",
       description: "cool sdk for Chains using MOVE, such as: starcoin, aptos, sui",
-      package: package(),
+      package: package()
     ]
   end
 
   defp package do
     [
-     files: ["lib", "mix.exs", "README.md"],
-     maintainers: ["leeduckgo"],
-     licenses: ["Apache 2.0"],
-     links: %{"GitHub" => "https://github.com/WeLightProject/web3_move_ex"}
-     ]
+      files: ["lib", "mix.exs", "README.md"],
+      maintainers: ["leeduckgo"],
+      licenses: ["Apache 2.0"],
+      links: %{"GitHub" => "https://github.com/WeLightProject/web3_move_ex"}
+    ]
   end
 
   # Run "mix help compile.app" to learn about applications.

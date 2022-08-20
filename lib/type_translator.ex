@@ -14,5 +14,4 @@ defmodule Web3MoveEx.TypeTranslator do
   end
 
   # TODO: impl other types
-
 end

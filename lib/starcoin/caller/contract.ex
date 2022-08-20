@@ -17,6 +17,7 @@ defmodule Web3MoveEx.Starcoin.Caller.Contract do
         "params":["0x0000000000000000000000000a550c18", "0x1::Account::Balance<0x1::STC::STC>"]
       }
   """
+
   # def get_resource(endpoint, address, :stc) do
   #   # TODO
   # end
@@ -76,20 +77,23 @@ defmodule Web3MoveEx.Starcoin.Caller.Contract do
     HTTP.post(endpoint, body)
   end
 
-
   def build_payload(function_id, args) do
-    [%{
-      function_id: function_id,
-      type_args: [],
-      args: args
-    }]
-  end
-  def build_payload(function_id, type_args, args) do
-    [%{
-      function_id: function_id,
-      type_args: type_args,
-      args: args
-    }]
+    [
+      %{
+        function_id: function_id,
+        type_args: [],
+        args: args
+      }
+    ]
   end
 
+  def build_payload(function_id, type_args, args) do
+    [
+      %{
+        function_id: function_id,
+        type_args: type_args,
+        args: args
+      }
+    ]
+  end
 end
