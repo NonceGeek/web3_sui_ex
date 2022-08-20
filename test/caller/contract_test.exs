@@ -157,4 +157,26 @@ defmodule Web3MoveEx.Caller.ContractTest do
       assert not is_nil(data[:error])
     end
   end
+
+  describe "dry_run_raw" do
+    test "Return data when %{signed_data} is right", %{endpoint: _endpoint} do
+      # TODO
+      assert true
+    end
+
+    test "Return wrong data when %{signed_data} is wrong", %{endpoint: endpoint} do
+      Web3MoveEx.HTTP.Mox
+      |> expect(:json_rpc, fn method, id ->
+        %{method: method, jsonrpc: "2.0", id: id}
+      end)
+      |> expect(:post, fn _url, _json ->
+        body = %{error: %{code: -32602, message: "Invalid params"}, id: 1, jsonrpc: "2.0"}
+
+        {:ok, body}
+      end)
+
+      {:ok, data} = Contract.dry_run_raw(endpoint, "0x500", "01111")
+      assert not is_nil(data[:error])
+    end
+  end
 end

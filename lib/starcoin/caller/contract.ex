@@ -114,6 +114,18 @@ defmodule Web3MoveEx.Starcoin.Caller.Contract do
     HTTP.post(endpoint, body)
   end
 
+  @doc """
+  Verify that the user signature is executable.
+  """
+  def dry_run_raw(endpoint, hex_signed_data, public_key) do
+    body =
+      @class
+      |> Caller.build_method("dry_run_raw")
+      |> HTTP.json_rpc([hex_signed_data, public_key])
+
+    HTTP.post(endpoint, body)
+  end
+
   def build_payload(function_id, args) do
     [
       %{
