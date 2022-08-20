@@ -77,6 +77,43 @@ defmodule Web3MoveEx.Starcoin.Caller.Contract do
     HTTP.post(endpoint, body)
   end
 
+  @doc """
+  Resolve contract function. get the input type when calling the contract method
+  If the first argument is of type `Signer`, that the current method requires a signature to be executed
+
+  ## Example
+    # transfer token to another account
+
+    iex> Web3MoveEx.Starcoin.Caller.Contract.Web3MoveEx.Starcoin.Caller.Contract(0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2)
+
+    [
+  	{
+  		"doc": "",
+  		"name": "p0",
+  		"type_tag": "Signer"
+  	},
+  	{
+  		"doc": "",
+  		"name": "p1",
+  		"type_tag": "Address"
+  	},
+  	{
+  		"doc": "",
+  		"name": "p2",
+  		"type_tag": "U128"
+  	}
+  ]
+
+  """
+  def resolve_function(endpoint, params) do
+    body =
+      @class
+      |> Caller.build_method("resolve_function")
+      |> HTTP.json_rpc([params])
+
+    HTTP.post(endpoint, body)
+  end
+
   def build_payload(function_id, args) do
     [
       %{
