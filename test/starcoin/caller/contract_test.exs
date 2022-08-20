@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Caller.ContractTest do
+defmodule Web3MoveEx.Starcoin.Caller.ContractTest do
   @moduledoc false
 
   use ExUnit.Case, async: true
