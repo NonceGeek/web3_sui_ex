@@ -32,6 +32,22 @@ defmodule Web3MoveEx.Starcoin.Caller.Contract do
   end
 
   @doc """
+  get account sequence number
+  """
+  def get_sequence_number(endpoint, address) do
+    with {:ok, %{result: %{value: value}}} <-
+           get_resource(endpoint, address, "0x1::Account::Account") do
+      value
+      |> Enum.find(fn [k, _v] -> k == "sequence_number" end)
+      |> List.last()
+      |> Map.values()
+      |> hd()
+      |> String.to_integer()
+      |> then(fn item -> {:ok, item} end)
+    end
+  end
+
+  @doc """
     Contract get code:
       get_code( "http://localhost:9851", "0x1::Account")
   """

@@ -10,11 +10,11 @@ defmodule Web3MoveEx.Starcoin.Caller.Chain do
 
   @class "chain"
 
-  def get_id(endpoint, id \\ 100) do
+  def get_id(endpoint) do
     body =
       @class
       |> Caller.build_method("id")
-      |> HTTP.json_rpc(id)
+      |> HTTP.json_rpc([])
 
     HTTP.post(endpoint, body)
   end

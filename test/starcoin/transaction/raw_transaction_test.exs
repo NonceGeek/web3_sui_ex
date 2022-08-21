@@ -60,9 +60,9 @@ defmodule Web3MoveEx.Starcoin.Transaction.RawTransactionTest do
     0100000000000000\
     0d3078313a3a5354433a3a535443\
     37a9000000000000\
-    fe
+    fe\
     """
 
-    assert signed_msg = Web3MoveEx.Starcoin.Transaction.signing_message(raw_tx)
+    assert signed_msg == Web3MoveEx.Starcoin.Transaction.signing_message(raw_tx)
   end
 end

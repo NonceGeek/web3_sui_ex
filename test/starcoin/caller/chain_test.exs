@@ -25,9 +25,8 @@ defmodule Web3MoveEx.Starcoin.Caller.ChainTest do
       {:ok, body}
     end)
 
-    {:ok, result} = Chain.get_id(endpoint, 1)
+    {:ok, result} = Chain.get_id(endpoint)
 
-    assert 1 = result["id"]
     assert %{"id" => 254, "name" => "dev"} = result["result"]
   end
 

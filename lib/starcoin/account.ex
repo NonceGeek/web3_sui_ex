@@ -3,14 +3,23 @@ defmodule Web3MoveEx.Starcoin.Account do
 
   import Web3MoveEx.Starcoin.Helpers
 
+  alias Web3MoveEx.Starcoin.Caller.Contract
   alias Web3MoveEx.Starcoin.SigningKey
 
   defstruct [
     :address,
+    :address_hex,
     :signing_key,
     :public_key,
-    :sequence_number
+    sequence_number: 0
   ]
+
+  def new(private_key, client) do
+    with {:ok, account} <- from_private_key(private_key),
+         {:ok, sequence_number} <- Contract.get_sequence_number(client, account.address_hex) do
+      {:ok, %{account | sequence_number: sequence_number}}
+    end
+  end
 
   def from_private_key(private_key) do
     with {:ok, signing_key} <- SigningKey.new(private_key) do
@@ -25,6 +34,7 @@ defmodule Web3MoveEx.Starcoin.Account do
     {:ok,
      %__MODULE__{
        address: b_address,
+       address_hex: to_hex(b_address),
        signing_key: signing_key,
        public_key: public_key
      }}
