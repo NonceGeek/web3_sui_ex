@@ -6,6 +6,16 @@ See the using example in:
 
 > https://github.com/WeLightProject/move_sdk_ex_liveview_example
 
+## Implementation
+
+- [] Starcoin
+  - [x] Readonly Function
+  - [x] Read Resource
+  - [x] Send Transaction
+  - [x] Chain Interactor
+- [] Aptos
+- [] Sui
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
@@ -14,7 +24,7 @@ by adding `web3_move_ex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:web3_move_ex, "~> 0.0.3"}
+    {:web3_move_ex, "~> 0.0.5"}
   ]
 end
 ```
