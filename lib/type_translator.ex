@@ -1,4 +1,6 @@
 defmodule Web3MoveEx.TypeTranslator do
+  @moduledoc false
+
   def hex_to_starcoin_byte(hex_str) do
     "x\"#{hex_str}\""
   end
@@ -14,5 +16,4 @@ defmodule Web3MoveEx.TypeTranslator do
   end
 
   # TODO: impl other types
-
 end
