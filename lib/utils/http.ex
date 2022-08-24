@@ -29,10 +29,16 @@ defmodule Web3MoveEx.HTTP do
 
   def json_rpc(method, param), do: http_impl().json_rpc(method, param)
 
-  def get(url), do: http_impl().get(url)
+  def get(url) when is_binary(url), do: http_impl().get(url)
+  def get(%{endpoint: url}), do: http_impl().get(url)
 
-  def post(url, body), do: http_impl().post(url, body)
-  def post(url, body, :urlencoded), do: http_impl().post(url, body, :urlencoded)
+  def post(url, body) when is_binary(url), do: http_impl().post(url, body)
+  def post(%{endpoint: url}, body), do: http_impl().post(url, body)
+
+  def post(url, body, :urlencoded) when is_binary(url),
+    do: http_impl().post(url, body, :urlencoded)
+
+  def post(%{endpoint: url}, body, :urlencoded), do: http_impl().post(url, body, :urlencoded)
 
   defp http_impl() do
     Application.get_env(:web3_move_ex, :http, HTTPImpl)
