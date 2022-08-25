@@ -40,7 +40,8 @@ defmodule Web3MoveEx.MixProject do
       {:earmark, ">= 0.0.0", only: :dev},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:binary, "~> 0.0.5"},
-      {:nimble_parsec, "~> 1.2"}
+      {:nimble_parsec, "~> 1.2"},
+      {:bcs, "~> 0.1.0"}
     ]
   end
 end
