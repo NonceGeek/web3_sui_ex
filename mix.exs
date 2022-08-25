@@ -40,8 +40,6 @@ defmodule Web3MoveEx.MixProject do
       {:earmark, ">= 0.0.0", only: :dev},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:binary, "~> 0.0.5"},
-      # Fork from Kabie/bcs. Since there is no release yet, fork make a stable version. If `Kabie/bcs` repo is stable, switch to hex.pm.
-      {:bcs, github: "zven21/bcs"},
       {:nimble_parsec, "~> 1.2"}
     ]
   end
