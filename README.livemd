@@ -143,7 +143,7 @@ client = Web3MoveEx.Starcoin.Client.connect()
 
 payload =
   %Web3MoveEx.Starcoin.TransactionPayload.ScriptFunction{
-    address: "0x52bfdf8638e3658bb9f00cc04ca98bdd",
+    address: "<deploy_address>",
     module: "MyCounter",
     function: "init_counter",
     type_args: [],
