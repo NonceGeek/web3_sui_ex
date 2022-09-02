@@ -22,12 +22,14 @@
 	client = Web3MoveEx.Starcoin.Client.connect()
 
 	payload =
-		Web3MoveEx.Starcoin.Transaction.Function.call(
-			client,
-			"0x52bfdf8638e3658bb9f00cc04ca98bdd::MyCounter::init_counter",
-			[],
-			[]
-		)
+		%Web3MoveEx.Starcoin.TransactionPayload.ScriptFunction{
+		address: "0x52bfdf8638e3658bb9f00cc04ca98bdd",
+		module: "MyCounter",
+		function: "init_counter",
+		type_args: [],
+		args: []
+	}
+		
 	options = [private_key: "<you_priv_key>"]
 
 	Web3MoveEx.Starcoin.deploy_contract(client, payload, "", options)
