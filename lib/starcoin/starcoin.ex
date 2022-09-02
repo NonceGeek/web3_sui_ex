@@ -25,10 +25,10 @@ defmodule Web3MoveEx.Starcoin do
     Txpool.submit_hex_transaction(client, signed_txn)
   end
 
-  def deploy_contract(client, file_path, payload, options \\ []) do
+  def deploy_contract(client, payload, module_path, options \\ []) do
     private_key = Keyword.get(options, :private_key, fetch_priv_key())
     {:ok, account} = Account.new(private_key, client)
-    {:ok, code} = File.read(file_path)
+    {:ok, code} = File.read(module_path)
 
     module = %TransactionPayload.Package.Module{bytes: code}
 
