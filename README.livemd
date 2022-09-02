@@ -130,10 +130,29 @@ Get-coin on local network:
 starcoin% dev get-coin -v 100STC
 ```
 
-Deply Contract:
+Deploy Contract with starcoin:
 
 ```
 starcoin% dev deploy [path to blob] -s [addr] -b
+```
+
+Deploy Contract with Elixir SDK:
+
+```elixir
+client = Web3MoveEx.Starcoin.Client.connect()
+
+payload =
+  Web3MoveEx.Starcoin.Transaction.Function.call(
+    client,
+    "0x52bfdf8638e3658bb9f00cc04ca98bdd::MyCounter::init_counter",
+    [],
+    []
+  )
+
+module_path = "./Web3-dApp-Camp/move-dapp/my-counter/build/my_counter/bytecode_modules/MyCounter.mv"
+options = [private_key: "0xdebb41434877520254a4551a80b78dcfdce9bc3d576b13b66c3b343d515c0a8b"]
+
+Web3MoveEx.Starcoin.deploy_contract(client, payload, module_path, options)
 ```
 
 **Additional Tips:**
@@ -150,7 +169,17 @@ $ starcoin --connect ws://barnard.seed.starcoin.org:9870 --local-account-dir ~/.
 ## 0x04 Read Resource
 
 ```elixir
-/ / TODO
+Web3MoveEx.Starcoin.Caller.Contract.get_resource(client, "<you_addresss>", "<deploy_address>::MyCounter::Counter")
+{:ok,
+ %{
+   id: 1,
+   jsonrpc: "2.0",
+   result: %{
+     abilities: 12,
+     type_: "<deploy_address>::MyCounter::Counter",
+     value: [["value", %{U64: "0"}]]
+   }
+ }}
 ```
 
 ## 0x05 Run ReadOnly Function in MOVE
@@ -162,5 +191,18 @@ $ starcoin --connect ws://barnard.seed.starcoin.org:9870 --local-account-dir ~/.
 ## 0x06 Run Writed Function in MOVE
 
 ```elixir
-/ / TODO
+client = Web3MoveEx.Starcoin.Client.connect()
+
+payload =
+  Web3MoveEx.Starcoin.Transaction.Function.call(
+    client,
+    "<deploy_address>::MyCounter::incr_counter",
+    [],
+    []
+  )
+
+options = [private_key: "<you_private_key>"]
+
+Web3MoveEx.Starcoin.submit_txn(client, payload, options)
+# when get resource return 1
 ```
