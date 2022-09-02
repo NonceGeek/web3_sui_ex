@@ -1,0 +1,166 @@
+<!-- livebook:{"persist_outputs":true} -->
+
+# web3_move_ex 使用指南
+
+```elixir
+Mix.install([:poison, :web3_move_ex])
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+## 0x01 Create a Connect
+
+> Link to Cookbook:
+> 
+> https://starcoinorg.github.io/starcoin-cookbook
+
+Create a Connect to three types of Starcoin Network:
+
+* Local Network
+* Testnet Barnard
+* Mainnet Starcoin
+
+```elixir
+alias Web3MoveEx.Starcoin
+# Create a Connect to local node
+client_local = Starcoin.Client.connect()
+IO.puts(inspect(client_local))
+# Create a Connect to Barnard node
+client_barnard = Starcoin.Client.connect("https://barnard-seed.starcoin.org")
+IO.puts(inspect(client_barnard))
+
+client_mainnet = Starcoin.Client.connect("https://main-seed.starcoin.org")
+IO.puts(inspect(client_mainnet))
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+%Web3MoveEx.Starcoin.Client{chain_id: 254, endpoint: "http://localhost:9851"}
+%Web3MoveEx.Starcoin.Client{chain_id: 251, endpoint: "https://barnard-seed.starcoin.org"}
+%Web3MoveEx.Starcoin.Client{chain_id: 1, endpoint: "https://main-seed.starcoin.org"}
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+## 0x02 Create Account
+
+Starcoin using the **Ed25519 Algorithm** for the Account.
+
+```elixir
+{:ok, %{address_hex: address_hex}} =
+  payload =
+  Starcoin.Account.from_private_key(
+    0xA95ED7F73DE144BC8F64C0266BE38ED6AF0903762E2503D3C7C71CDA69EEA99A
+  )
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:ok,
+ %Web3MoveEx.Starcoin.Account{
+   address: <<17, 104, 232, 143, 252, 92, 236, 83, 179, 152, 180, 45, 97, 136, 91, 187>>,
+   address_hex: "0x1168e88ffc5cec53b398b42d61885bbb",
+   public_key: <<182, 132, 185, 94, 183, 12, 78, 210, 69, 176, 65, 101, 54, 159, 176, 213, 17, 104,
+     232, 143, 252, 92, 236, 83, 179, 152, 180, 45, 97, 136, 91, 187>>,
+   sequence_number: 0,
+   signing_key: %Web3MoveEx.Starcoin.SigningKey{
+     private_key: <<169, 94, 215, 247, 61, 225, 68, 188, 143, 100, 192, 38, 107, 227, 142, 214, 175,
+       9, 3, 118, 46, 37, 3, 211, 199, 199, 28, 218, 105, 238, 169, 154>>,
+     public_key: <<216, 214, 6, 64, 220, 252, 62, 18, 115, 98, 182, 218, 97, 153, 40, 125, 44, 236,
+       69, 88, 194, 34, 54, 251, 3, 120, 233, 36, 185, 157, 10, 42>>
+   }
+ }}
+```
+
+## 0x03 Deploy Contract
+
+// TODO Impl Deploy Contract by ex SDK
+
+### 3.1 Starcoin Console Ways
+
+Using the `my_counter` as Example:
+
+```
+$ git clone git@github.com:WeLightProject/Web3-dApp-Camp.git
+$ cd Web3-dApp-Camp/move-dapp/my-counter
+```
+
+Modify the address in `move.toml` to the address that you would like to deploy your contract.
+
+```rust
+[package]
+name = "my_counter"
+version = "0.0.1"
+
+[addresses]
+StarcoinFramework = "0x1"
+MyAddr = [YOUR ADDR] 
+
+[dependencies]
+StarcoinFramework = {git = "https://github.com/starcoinorg/starcoin-framework.git", rev="9ea61ce1429070c945002b26ef5f5ea6b72884e4"}
+```
+
+Compile:
+
+```bash
+$ mpm release
+```
+
+> 💡 [How to install mpm?](https://starcoinorg.github.io/starcoin-cookbook/docs/move/prepare-move-env)
+
+Open Console, the command will start a dev node local yet:
+
+```bash
+$ starcoin -d /Users/liaohua/starcoin_data -n dev console
+```
+
+Get-coin on local network:
+
+```
+starcoin% dev get-coin -v 100STC
+```
+
+Deply Contract:
+
+```
+starcoin% dev deploy [path to blob] -s [addr] -b
+```
+
+**Additional Tips:**
+
+* Get Faucet on barnard:
+  https://faucet.starcoin.org/barnard
+
+* Connect Testnet by Console:
+
+```bash
+$ starcoin --connect ws://barnard.seed.starcoin.org:9870 --local-account-dir ~/.starcoin/barnard/account_vaults console
+```
+
+## 0x04 Read Resource
+
+```elixir
+/ / TODO
+```
+
+## 0x05 Run ReadOnly Function in MOVE
+
+```elixir
+/ / TODO
+```
+
+## 0x06 Run Writed Function in MOVE
+
+```elixir
+/ / TODO
+```
