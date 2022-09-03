@@ -15,7 +15,7 @@ defmodule Web3MoveEx.MixProject do
 
   defp package do
     [
-      files: ["lib", "mix.exs", "README.md"],
+      files: ["lib", "mix.exs", "README.livemd"],
       maintainers: ["leeduckgo"],
       licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/WeLightProject/web3_move_ex"}
