@@ -41,7 +41,9 @@ defmodule Web3MoveEx.MixProject do
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:binary, "~> 0.0.5"},
       {:nimble_parsec, "~> 1.2"},
-      {:bcs, "~> 0.1.0"}
+      {:bcs, "~> 0.1.0"},
+      {:tesla, "~> 1.4"},
+      {:hackney, "~> 1.17"}
     ]
   end
 end
