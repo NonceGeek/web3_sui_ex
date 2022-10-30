@@ -1,4 +1,4 @@
-defmodule Aptos.RPC do
+defmodule Web3MoveEx.Aptos.RPC do
     @moduledoc """
       Copy From: https://github.com/myastrallabs/stormstout
     """
