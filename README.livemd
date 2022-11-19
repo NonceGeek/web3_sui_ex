@@ -8,7 +8,7 @@ Mix.install([:poison, :web3_move_ex])
 
 ## Description
 
-Move(Starcoin) SDK impl in elixir!
+Move(Aptos/Starcoin/Sui) SDK impl in elixir!
 
 See the using example in:
 
@@ -16,13 +16,15 @@ See the using example in:
 
 ## Implementation
 
+* [x] Aptos
+  * [x] RPC Implementation
+  * [x] Read Resource
 * [x] Starcoin
   * [x] Readonly Function
   * [x] Read Resource
   * [x] Send Transaction
   * [x] Deploy Contract
   * [x] Chain Interactor
-* [ ] Aptos
 * [ ] Sui
 
 ## Installation
@@ -42,9 +44,15 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/web3_move_ex](https://hexdocs.pm/web3_move_ex).
 
-## Livebook Little CookBook
+## Aptos
 
-## 0x01 Create a Connect
+**Namespace:** Web3MoveEx.Aptos
+
+## Starcoin
+
+**Namespace:** Web3MoveEx.Starcoin
+
+### 0x01 Create a Connect
 
 ```elixir
 alias Web3MoveEx.Starcoin
@@ -73,7 +81,7 @@ IO.puts(inspect(client_mainnet))
 :ok
 ```
 
-## 0x02 Create Account
+### 0x02 Create Account
 
 Starcoin using the **Ed25519 Algorithm** for the Account.
 
@@ -104,7 +112,7 @@ Starcoin using the **Ed25519 Algorithm** for the Account.
  }}
 ```
 
-## 0x03 Deploy Contract
+### 0x03 Deploy Contract
 
 #### 3.1 Starcoin Console Ways
 
@@ -188,7 +196,7 @@ Web3MoveEx.Starcoin.deploy_contract(client, payload, module_path, options)
 $ starcoin --connect ws://barnard.seed.starcoin.org:9870 --local-account-dir ~/.starcoin/barnard/account_vaults console
 ```
 
-## 0x04 Read Resource
+### 0x04 Read Resource
 
 ```elixir
 Web3MoveEx.Starcoin.Caller.Contract.get_resource(
@@ -209,7 +217,7 @@ Web3MoveEx.Starcoin.Caller.Contract.get_resource(
  }}
 ```
 
-## 0x05 Run ReadOnly Function in MOVE
+### 0x05 Run ReadOnly Function in MOVE
 
 ```elixir
 / / TODO
