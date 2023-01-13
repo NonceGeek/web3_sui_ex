@@ -5,8 +5,8 @@ defmodule Web3MoveEx.Aptos.RPC do
 
   defstruct [:endpoint, :client, :chain_id]
 
-  # @endpoint "https://fullnode.devnet.aptoslabs.com/v1"
-  @endpoint "https://testnet.aptoslabs.com/v1"
+  @endpoint "https://fullnode.devnet.aptoslabs.com/v1"
+  # @endpoint "https://testnet.aptoslabs.com/v1"
 
   @doc """
     {:ok, client} = Aptos.RPC.connect()
@@ -182,5 +182,11 @@ defmodule Web3MoveEx.Aptos.RPC do
 
   def get_table_item(client, table_handle, table_key) do
     post(client, "/tables/#{table_handle}/item", table_key)
+  end
+
+  def submit_bcs_transaction(client, signed_transaction_in_bcs) do
+    post(client, "/transactions", signed_transaction_in_bcs,
+      headers: [{"content-type", "application/x.aptos.signed_transaction+bcs"}]
+    )
   end
 end

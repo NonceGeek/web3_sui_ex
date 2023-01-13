@@ -7,7 +7,7 @@ import Web3MoveEx.Aptos
 
 alias Web3MoveEx.Aptos
 
-{:ok, rpc} = Aptos.Rpc.connect()
+{:ok, rpc} = Aptos.RPC.connect()
 
 {:ok, account} = Aptos.Account.from_private_key(your_private_key)
 {:ok, account} = Aptos.load_account(rpc, account)
