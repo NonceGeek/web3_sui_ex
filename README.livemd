@@ -258,4 +258,4 @@ Please write unit test with your code if necessary.
 
 ## **License**
 
-web3 is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+web3_move_ex is available as open source under the terms of the [MIT License](./LICENSE.md).
