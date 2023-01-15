@@ -34,6 +34,7 @@ defmodule Web3MoveEx.MixProject do
     [
       {:httpoison, "~> 1.8"},
       {:poison, "~> 3.1"},
+      {:json, ">= 0.0.0"},
       {:mox, "~> 1.0", only: :test},
       {:ex_struct_translator, "~> 0.1.1"},
       {:ex_doc, ">= 0.0.0", only: :dev},
