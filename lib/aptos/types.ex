@@ -36,25 +36,25 @@ defmodule Web3MoveEx.Aptos.Types do
     Enum.reverse(acc)
   end
 
-  defp encode_arg(address, :address) do
+  def encode_arg(address, :address) do
     {:ok, address} = Web3MoveEx.Aptos.Types.Address.new(address)
     {:ok, Bcs.encode(address)}
   end
 
-  defp encode_arg(bool, :bool) do
+  def encode_arg(bool, :bool) do
     {:ok, Bcs.encode(bool, :bool)}
   end
 
   for n <- [8, 64, 128] do
     t = :"u#{n}"
 
-    defp encode_arg(uint, unquote(t)) do
+    def encode_arg(uint, unquote(t)) do
       {:ok, <<uint::little-unsigned-size(unquote(n))>>}
     end
   end
 
-  defp encode_arg(list, {:vector, inner_type}) do
-    Bcs.encode(list, unwrap_vector_type({:vector, inner_type}))
+  def encode_arg(list, {:vector, inner_type}) do
+    {:ok, Bcs.encode(list, unwrap_vector_type({:vector, inner_type}))}
   end
 
   defp unwrap_vector_type({:vector, inner_type}) do

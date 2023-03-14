@@ -202,26 +202,27 @@ import Web3MoveEx.Aptos
 
 alias Web3MoveEx.Aptos
 
-{:ok, rpc} = Aptos.RPC.connect("https://fullnode.testnet.aptoslabs.com/v1")
+{:ok, client} = Aptos.RPC.connect("https://fullnode.testnet.aptoslabs.com/v1")
+
+client
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
-{:ok,
- %Web3MoveEx.Aptos.RPC{
-   endpoint: "https://fullnode.testnet.aptoslabs.com/v1",
-   client: %Tesla.Client{
-     fun: nil,
-     pre: [
-       {Tesla.Middleware.BaseUrl, :call, ["https://fullnode.testnet.aptoslabs.com/v1"]},
-       {Tesla.Middleware.JSON, :call, [[engine_opts: [keys: :atoms]]]}
-     ],
-     post: [],
-     adapter: nil
-   },
-   chain_id: 2
- }}
+%Web3MoveEx.Aptos.RPC{
+  endpoint: "https://fullnode.testnet.aptoslabs.com/v1",
+  client: %Tesla.Client{
+    fun: nil,
+    pre: [
+      {Tesla.Middleware.BaseUrl, :call, ["https://fullnode.testnet.aptoslabs.com/v1"]},
+      {Tesla.Middleware.JSON, :call, [[engine_opts: [keys: :atoms]]]}
+    ],
+    post: [],
+    adapter: nil
+  },
+  chain_id: 2
+}
 ```
 
 ### 4.2 Create Account
@@ -350,7 +351,7 @@ Web3MoveEx.Aptos.RPC.get_account_resource(rpc, "0x3", "0x1::account::Account")
  }}
 ```
 
-#### 4.3.2 Read the item in Dict
+#### 4.3.2 Read the item in Table
 
 💡 You could get handle in  Explorer:
 
