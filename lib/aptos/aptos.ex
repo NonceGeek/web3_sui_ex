@@ -35,6 +35,7 @@ defmodule Web3MoveEx.Aptos do
   end
 
   def submit_txn(client, account, payload, options \\ []) do
+    # TODO:update acct to the latest status auto when submit it
     raw_txn =
       Web3MoveEx.Aptos.Transaction.make_raw_txn(account, client.chain_id, payload, options)
 
