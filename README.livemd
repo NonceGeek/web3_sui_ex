@@ -2,7 +2,9 @@
 
 # Web3MoveEx
 
-> Test Smart Contract Lists: 
+## Section
+
+> Test Smart Contract Lists:
 > 
 > * hello_blockchain: [0xcd6e69ff3c22db037584fb1650f7ca75df721fb0143690fb33f2f3bd0c1fe5bd](https://explorer.aptoslabs.com/account/0xcd6e69ff3c22db037584fb1650f7ca75df721fb0143690fb33f2f3bd0c1fe5bd/modules)
 
@@ -248,7 +250,7 @@ account
 ```elixir
 # {:ok, account_ol} = Aptos.load_account(rpc, account)
 # account_ol
-# it will works if account is actived(has any APT
+# it will works if account is actived(has any APT)
 ```
 
 <!-- livebook:{"output":true} -->

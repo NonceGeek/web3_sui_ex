@@ -1,0 +1,23 @@
+# MoveDID
+
+```elixir
+Mix.install([:poison, :jason, {:web3_move_ex, "~> 0.2.0"}])
+```
+
+```elixir
+
+{:ok, rpc} = Aptos.RPC.connect("https://fullnode.testnet.aptoslabs.com/v1")
+f = %Web3MoveEx.Aptos.Types.Function{
+	address: 0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8,
+	is_entry: true,
+	module: "addr_aggregator",
+	name: "create_addr_aggregator",
+	params: [:string, :u64],
+	return: [],
+	type_params: [%{"constraints" => []}],
+	visibility: :public
+}
+payload = Aptos.call_function(f, [], ["testAcct", 1])
+{:ok, account_ol} = Aptos.load_account(rpc, acct)
+Aptos.submit_txn(rpc, account_ol, payload)
+```

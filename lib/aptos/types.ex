@@ -45,6 +45,10 @@ defmodule Web3MoveEx.Aptos.Types do
     {:ok, Bcs.encode(bool, :bool)}
   end
 
+  def encode_arg(string, :string) do
+    {:ok, Bcs.encode(string, :string)}
+  end
+
   for n <- [8, 64, 128] do
     t = :"u#{n}"
 

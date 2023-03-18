@@ -1,0 +1,194 @@
+# Hello Blockchain
+
+```elixir
+Mix.install([:poison, :jason, {:web3_move_ex, "~> 0.2.0"}])
+```
+
+## 0x00 Main Code
+
+`hello_blockchain.move` :
+
+```rust
+module hello_blockchain::message {
+    use std::error;
+    use std::signer;
+    use std::string;
+    use aptos_framework::account;
+    use aptos_framework::event;
+
+//:!:>resource
+    struct MessageHolder has key {
+        message: string::String,
+        message_change_events: event::EventHandle<MessageChangeEvent>,
+    }
+//<:!:resource
+
+    struct MessageChangeEvent has drop, store {
+        from_message: string::String,
+        to_message: string::String,
+    }
+
+    /// There is no message present
+    const ENO_MESSAGE: u64 = 0;
+
+    #[view]
+    public fun get_message(addr: address): string::String acquires MessageHolder {
+        assert!(exists<MessageHolder>(addr), error::not_found(ENO_MESSAGE));
+        *&borrow_global<MessageHolder>(addr).message
+    }
+
+    public entry fun set_message(account: signer, message: string::String)
+    acquires MessageHolder {
+        let account_addr = signer::address_of(&account);
+        if (!exists<MessageHolder>(account_addr)) {
+            move_to(&account, MessageHolder {
+                message,
+                message_change_events: account::new_event_handle<MessageChangeEvent>(&account),
+            })
+        } else {
+            let old_message_holder = borrow_global_mut<MessageHolder>(account_addr);
+            let from_message = *&old_message_holder.message;
+            event::emit_event(&mut old_message_holder.message_change_events, MessageChangeEvent {
+                from_message,
+                to_message: copy message,
+            });
+            old_message_holder.message = message;
+        }
+    }
+
+    #[test(account = @0x1)]
+    public entry fun sender_can_set_message(account: signer) acquires MessageHolder {
+        let addr = signer::address_of(&account);
+        aptos_framework::account::create_account_for_test(addr);
+        set_message(account,  string::utf8(b"Hello, Blockchain"));
+
+        assert!(
+          get_message(addr) == string::utf8(b"Hello, Blockchain"),
+          ENO_MESSAGE
+        );
+    }
+}
+
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+`hello_blockchain_test.move` :
+
+```rust
+#[test_only]
+module hello_blockchain::message_tests {
+    use std::signer;
+    use std::unit_test;
+    use std::vector;
+    use std::string;
+
+    use hello_blockchain::message;
+
+    fun get_account(): signer {
+        vector::pop_back(&mut unit_test::create_signers_for_testing(1))
+    }
+
+    #[test]
+    public entry fun sender_can_set_message() {
+        let account = get_account();
+        let addr = signer::address_of(&account);
+        aptos_framework::account::create_account_for_test(addr);
+        message::set_message(account,  string::utf8(b"Hello, Blockchain"));
+
+        assert!(
+          message::get_message(addr) == string::utf8(b"Hello, Blockchain"),
+          0
+        );
+    }
+}
+
+```
+
+## 0x01 Smart Contract Code Analysis
+
+### 1.1 结构体
+
+> 💡 **能力**
+> 
+> Move 中的结构可以被赋予不同的能力，描述可以用该类型做什么。 存在有四种不同的能力：
+> 
+> **copy:** 具有被复制能力的类型的值。 地理 ID 将是一个很好的用例。 NFT 不应该有这个能力。
+> 
+> **drop:** 具有这种能力的类型的值被弹出/删除。
+> 
+> **store:** 具有这种能力的类型的值可以保存或存储在全局存储的结构中。
+> 
+> **key:** 用作全局存储操作的键的类型。 有了这个能力，一个值可以作为顶级项目存储在一个帐户中。
+
+> 💡 **Abilities**
+> 
+> Structures in Move can be given different abilities that describe what can be done with that type. There are four different abilities that allow:
+> 
+> **copy:** values of types with this ability to be copied. A geographic ID would be a good use case. NFTs should not have this ability.
+> 
+> **drop:** values of types with this ability to be popped/dropped.
+> 
+> **store:** values of types with this ability to be saved or stored inside a struct in global storage.
+> 
+> **key:** the type to serve as a key for global storage operations. With this ability, a value can be stored as a top-level item inside an account.
+
+```
+struct MessageHolder has key {
+    message: string::String,
+    message_change_events: event::EventHandle<MessageChangeEvent>,
+}
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+### 1.2 Events
+
+```
+struct MessageChangeEvent has drop, store {
+    from_message: string::String,
+    to_message: string::String,
+}
+```
+
+<!-- livebook:{"break_markdown":true} -->
+
+### 1.3 Functions
+
+> 💡 **获取**
+> 
+> 任何时候你需要使用任何全局资源，比如一个结构，你应该首先获取它。 例如，存入和提取一个 NFT 都会获取 TokenStore。 如果您在不同的模块中有一个函数调用模块内部的函数来获取资源，则不必将第一个函数标记为 acquires()。
+> 
+> 这使得所有权清晰，因为资源存储在帐户内。 帐户可以决定是否可以在那里创建资源。 定义该资源的模块有权读取和修改该结构。 因此该模块内的代码需要显式获取该结构。
+> 
+> 尽管如此，在 Move 中借用或移动的任何地方，您都会自动获取资源。 为清楚起见，使用 acquire 明确包含。 同样，exists() 函数不需要 acquires() 函数。
+> 
+> 注意：您可以从您自己的模块中定义的结构中的任何帐户借用模块中的全局。 您不能在模块外借用 global。
+
+```
+  #[view]
+  public fun get_message(addr: address): string::String acquires MessageHolder {
+      assert!(exists<MessageHolder>(addr), error::not_found(ENO_MESSAGE));
+      *&borrow_global<MessageHolder>(addr).message
+  }
+
+  public entry fun set_message(account: signer, message: string::String)
+  acquires MessageHolder {
+      let account_addr = signer::address_of(&account);
+      if (!exists<MessageHolder>(account_addr)) {
+          move_to(&account, MessageHolder {
+              message,
+              message_change_events: account::new_event_handle<MessageChangeEvent>(&account),
+          })
+      } else {
+          let old_message_holder = borrow_global_mut<MessageHolder>(account_addr);
+          let from_message = *&old_message_holder.message;
+          event::emit_event(&mut old_message_holder.message_change_events, MessageChangeEvent {
+              from_message,
+              to_message: copy message,
+          });
+          old_message_holder.message = message;
+      }
+  }
+
+```
