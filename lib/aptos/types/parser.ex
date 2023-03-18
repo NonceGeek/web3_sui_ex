@@ -19,13 +19,13 @@ defmodule Web3MoveEx.Aptos.Parser do
   u128_type = string("u128") |> replace(:u128)
   address_type = string("address") |> replace(:address)
   signer_type = ignore(optional(string("&"))) |> string("signer") |> replace(:signer)
-
+  string_type = string("string") |> replace(:string)
   address =
     string("0x")
     |> ignore()
-    |> ascii_string([?0..?9, ?a..?f, ?A..?F], min: 1, max: 40)
+    |> ascii_string([?0..?9, ?a..?f, ?A..?F], min: 1, max: 64)
     |> map(:to_address)
-    |> label("address: 0x[0-9a-fA-F]{1,40}")
+    |> label("address: 0x[0-9a-fA-F]{1,64}")
 
   generic = fn t ->
     string("<")
@@ -74,7 +74,8 @@ defmodule Web3MoveEx.Aptos.Parser do
       u64_type,
       u128_type,
       address_type,
-      signer_type
+      signer_type,
+      string_type
     ])
 
   defparsecp(
