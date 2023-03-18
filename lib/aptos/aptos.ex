@@ -68,11 +68,11 @@ end
 #   is_entry: true,
 #   module: "coin",
 #   name: "transfer",
-#   params: [:address, :u64],
+#   params: [:address, :u64, {:vector, :string}],
 #   return: [],
 #   type_params: [%{"constraints" => []}],
 #   visibility: :public
 # }
 
-# payload = Web3MoveEx.Aptos.call_function(f, ["0x1::aptos_coin::AptosCoin"], [account.address, 100])
+# payload = Web3MoveEx.Aptos.call_function(f, ["0x1::aptos_coin::AptosCoin"], [account.address, 100, ["abc","456"])
 # Web3MoveEx.Aptos.submit_txn(rpc, account, payload)

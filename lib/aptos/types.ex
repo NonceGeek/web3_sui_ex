@@ -54,7 +54,7 @@ defmodule Web3MoveEx.Aptos.Types do
   end
 
   defp encode_arg(list, {:vector, inner_type}) do
-    Bcs.encode(list, unwrap_vector_type({:vector, inner_type}))
+  {:ok, Bcs.encode(list, unwrap_vector_type({:vector, inner_type}))}
   end
 
   defp unwrap_vector_type({:vector, inner_type}) do
