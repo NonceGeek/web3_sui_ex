@@ -1,6 +1,8 @@
 defmodule Web3MoveEx.Starcoin.Parser do
   @moduledoc false
 
+  # TODO: detected the space between the params:
+  # ~A"0x1::coin::transfer<CoinType>(address, u64)"f
   import NimbleParsec
 
   defp to_address(str) do
@@ -18,6 +20,7 @@ defmodule Web3MoveEx.Starcoin.Parser do
   u64_type = string("u64") |> replace(:u64)
   u128_type = string("u128") |> replace(:u128)
   address_type = string("address") |> replace(:address)
+  string_type = string("string") |> replace(:string)
   signer_type = ignore(optional(string("&"))) |> string("signer") |> replace(:signer)
 
   address =
@@ -74,7 +77,8 @@ defmodule Web3MoveEx.Starcoin.Parser do
       u64_type,
       u128_type,
       address_type,
-      signer_type
+      signer_type,
+      string_type
     ])
 
   defparsecp(

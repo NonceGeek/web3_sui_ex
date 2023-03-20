@@ -1,6 +1,6 @@
 defmodule Web3MoveEx.Aptos.Parser do
   @moduledoc false
-
+  alias Web3MoveEx.Aptos.Types.Function
   import NimbleParsec
 
   defp to_address(str) do
@@ -18,14 +18,15 @@ defmodule Web3MoveEx.Aptos.Parser do
   u64_type = string("u64") |> replace(:u64)
   u128_type = string("u128") |> replace(:u128)
   address_type = string("address") |> replace(:address)
-  signer_type = ignore(optional(string("&"))) |> string("signer") |> replace(:signer)
   string_type = string("string") |> replace(:string)
+  signer_type = ignore(optional(string("&"))) |> string("signer") |> replace(:signer)
+
   address =
     string("0x")
     |> ignore()
-    |> ascii_string([?0..?9, ?a..?f, ?A..?F], min: 1, max: 64)
+    |> ascii_string([?0..?9, ?a..?f, ?A..?F], min: 1, max: 40)
     |> map(:to_address)
-    |> label("address: 0x[0-9a-fA-F]{1,64}")
+    |> label("address: 0x[0-9a-fA-F]{1,40}")
 
   generic = fn t ->
     string("<")
@@ -166,7 +167,8 @@ defmodule Web3MoveEx.Aptos.Parser do
   )
 
   defp to_function(fields) do
-    struct(Web3MoveEx.Aptos.Types.Function, fields)
+    Function.new(fields)
+    # struct(Web3MoveEx.Aptos.Types.Function, fields)
   end
 
   def parse_function(string) do

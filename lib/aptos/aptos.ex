@@ -5,7 +5,7 @@ defmodule Web3MoveEx.Aptos do
   alias Web3MoveEx.Aptos.RPC
 
   @doc """
-  `~A"0x1::coin::transfer<CoinType>(address,u64)"f`
+    `~A"0x1::coin::transfer<CoinType>(address,u64)"f`
   """
   defmacro sigil_A({:<<>>, _, [string]}, _modifiers) do
     {:ok, function} = Web3MoveEx.Aptos.Parser.parse_function(string)
@@ -34,12 +34,16 @@ defmodule Web3MoveEx.Aptos do
     end
   end
 
-  def submit_txn(client, account, payload, options \\ []) do
-    # TODO:update acct to the latest status auto when submit it
-    raw_txn =
-      Web3MoveEx.Aptos.Transaction.make_raw_txn(account, client.chain_id, payload, options)
+  def submit_txn_with_auto_acct_updating(client, acct, payload, options \\ []) do
+    {:ok, acct_ol} = load_account(client, acct)
+    submit_txn(client, acct_ol, payload, options)
+  end
+  def submit_txn(client, acct, payload, options \\ []) do
 
-    signed_txn = Web3MoveEx.Aptos.Transaction.sign_ed25519(raw_txn, account.signing_key)
+    raw_txn =
+      Web3MoveEx.Aptos.Transaction.make_raw_txn(acct, client.chain_id, payload, options)
+
+    signed_txn = Web3MoveEx.Aptos.Transaction.sign_ed25519(raw_txn, acct.signing_key)
     Web3MoveEx.Aptos.RPC.submit_bcs_transaction(client, signed_txn)
   end
 

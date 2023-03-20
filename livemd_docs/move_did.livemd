@@ -5,14 +5,15 @@ Mix.install([:poison, :jason, {:web3_move_ex, "~> 0.2.0"}])
 ```
 
 ```elixir
-
+{:ok, acct} = Web3MoveEx.Aptos.Account.from_private_key("0xd2d80074a422d0fca374aeb9bf0ed154c4b3e995818a2a21f2135adedd1fbb21")
 {:ok, rpc} = Aptos.RPC.connect("https://fullnode.testnet.aptoslabs.com/v1")
 f = %Web3MoveEx.Aptos.Types.Function{
 	address: 0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8,
 	is_entry: true,
 	module: "addr_aggregator",
 	name: "create_addr_aggregator",
-	params: [:string, :u64],
+	params: [:u64, :string],
+	param_names: ["type", "description"],
 	return: [],
 	type_params: [%{"constraints" => []}],
 	visibility: :public
@@ -38,12 +39,13 @@ f = %Web3MoveEx.Aptos.Types.Function{
 #        move_to<AddrAggregator>(acct, addr_aggr);
 #    }
 
-f = %Web3MoveEx.Aptos.Types.Function{
+f2 = %Web3MoveEx.Aptos.Types.Function{
 	address: "0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8",
 	is_entry: true,
 	module: "addr_aggregator",
 	name: "add_addr",
-	params: [:u64, :string, :string, {:vector, :string}, :string, u64],
+	params: [:u64, :string, :string, {:vector, :string}, :string, :u64],
+	param_names: ["addr_type", "addr", "pubkey", "chains", "description", "expired_at"],
 	return: [],
 	type_params: [%{"constraints" => []}],
 	visibility: :public
@@ -65,7 +67,13 @@ f = %Web3MoveEx.Aptos.Types.Function{
     #     do_add_addr(addr_aggr, send_addr, addr_type, addr, pubkey, chains, description, expired_at);
     # }
 
-payload = Aptos.call_function(f, [], ["testAcct", 1])
+payload = Aptos.call_function(f, [], [1, "testAcct"])
 {:ok, account_ol} = Aptos.load_account(rpc, acct)
 Aptos.submit_txn(rpc, account_ol, payload)
+
+# Check events
+## build event path.
+### get the register_events(index)
+Aptos.RPC.build_event_path(rpc, "0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8", "0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8::addr_aggregator::CreateAddrAggregatorEventSet", "create_addr_aggregator_events")
+
 ```

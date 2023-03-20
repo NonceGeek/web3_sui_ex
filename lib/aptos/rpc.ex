@@ -5,8 +5,8 @@ defmodule Web3MoveEx.Aptos.RPC do
 
   defstruct [:endpoint, :client, :chain_id]
 
-  @endpoint "https://fullnode.devnet.aptoslabs.com/v1"
-  # @endpoint "https://testnet.aptoslabs.com/v1"
+  # @endpoint "https://fullnode.devnet.aptoslabs.com/v1"
+  @endpoint "https://fullnode.testnet.aptoslabs.com/v1"
 
   @doc """
     {:ok, client} = Aptos.RPC.connect()
@@ -153,6 +153,10 @@ defmodule Web3MoveEx.Aptos.RPC do
       {:ok, event_list} -> {:ok, event_list}
       {:error, %{error_code: "resource_not_found"}} -> {:ok, []}
     end
+  end
+
+  def build_event_path(%{endpoint: endpoint}, address, event_handle, field) do
+    "#{endpoint}/accounts/#{address}/events/#{event_handle}/#{field}"
   end
 
   @doc """
