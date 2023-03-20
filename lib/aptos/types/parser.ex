@@ -24,9 +24,9 @@ defmodule Web3MoveEx.Aptos.Parser do
   address =
     string("0x")
     |> ignore()
-    |> ascii_string([?0..?9, ?a..?f, ?A..?F], min: 1, max: 40)
+    |> ascii_string([?0..?9, ?a..?f, ?A..?F], min: 1, max: 64)
     |> map(:to_address)
-    |> label("address: 0x[0-9a-fA-F]{1,40}")
+    |> label("address: 0x[0-9a-fA-F]{1,64}")
 
   generic = fn t ->
     string("<")

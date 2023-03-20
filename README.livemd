@@ -9,7 +9,7 @@
 > * hello_blockchain: [0xcd6e69ff3c22db037584fb1650f7ca75df721fb0143690fb33f2f3bd0c1fe5bd](https://explorer.aptoslabs.com/account/0xcd6e69ff3c22db037584fb1650f7ca75df721fb0143690fb33f2f3bd0c1fe5bd/modules)
 
 ```elixir
-Mix.install([:poison, :jason, {:web3_move_ex, "~> 0.2.0"}])
+Mix.install([:poison, :jason, {:web3_move_ex, "~> 0.3.1"}])
 ```
 
 <!-- livebook:{"output":true} -->
