@@ -32,7 +32,7 @@ defmodule Web3MoveEx.Aptos.Parser do
     string("<")
     |> ignore()
     |> concat(parsec(t))
-    |> repeat(space |> string(",") |> ignore() |> parsec(t))
+    |> repeat(space |> string(",") |> ignore() |> parsec(:space) |> parsec(t))
     |> concat(space |> string(">") |> ignore())
     |> label("generic type")
   end
@@ -103,7 +103,7 @@ defmodule Web3MoveEx.Aptos.Parser do
     ])
     |> label("primitive types")
   )
-
+  defparsecp(:space, space |> label("space"))
   def parse_primitive_type(string) do
     with {:ok, [result], "", _, _, _} <- primitive_types(string) do
       {:ok, result}
@@ -119,7 +119,7 @@ defmodule Web3MoveEx.Aptos.Parser do
     string("(")
     |> ignore()
     |> concat(optional(parsec(:primitive_types)))
-    |> repeat(space |> string(",") |> ignore() |> parsec(:primitive_types))
+    |> repeat(space |> string(",") |> ignore() |> parsec(:space)  |> parsec(:primitive_types))
     |> concat(space |> string(")") |> ignore())
     |> label("function params")
 
