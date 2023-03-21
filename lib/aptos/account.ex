@@ -5,6 +5,8 @@ defmodule Web3MoveEx.Aptos.Account do
     :address,
     :auth_key,
     :signing_key,
+    :priv_key,
+    :priv_key_hex,
     :sequence_number
   ]
 
@@ -12,6 +14,8 @@ defmodule Web3MoveEx.Aptos.Account do
           address: binary(),
           auth_key: nil | binary(),
           signing_key: nil | map(),
+          priv_key: nil | binary(),
+          priv_key_hex: nil | String.t(),
           sequence_number: nil | non_neg_integer()
         }
 
@@ -37,9 +41,26 @@ defmodule Web3MoveEx.Aptos.Account do
   end
 
   def from_private_key(private_key, address \\ nil) do
+    do_from_private_key(private_key, address)
+  end
+  def do_from_private_key(private_key, address) when is_integer(private_key) do
     with {:ok, signing_key} <- Web3MoveEx.Aptos.SigningKey.new(private_key) do
-      from_signing_key(signing_key, address)
+      {:ok, acct} = from_signing_key(signing_key, address)
+      private_key_hex = "0x#{private_key |> Integer.to_string(16) |> String.downcase()}"
+      {:ok,
+        acct
+        |> Map.put(:priv_key, private_key)
+        |> Map.put(:priv_key_hex, private_key_hex)
+      }
     end
+  end
+
+  def do_from_private_key(private_key, address) when is_binary(private_key) do
+    priv =
+      private_key
+      |> Binary.drop(2)
+      |> String.to_integer(16)
+    do_from_private_key(priv, address)
   end
 
   defimpl Inspect do

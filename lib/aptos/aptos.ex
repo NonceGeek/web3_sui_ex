@@ -87,6 +87,9 @@ defmodule Web3MoveEx.Aptos do
       encoded_args
     )
   end
+
+  def hello(sth) when is_atom(sth), do: :atomics
+  def hello(sth) when is_binary(sth), do: :binary
 end
 
 # {:ok, rpc} = Web3MoveEx.Aptos.RPC.connect()
