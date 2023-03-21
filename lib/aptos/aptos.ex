@@ -2,7 +2,9 @@ defmodule Web3MoveEx.Aptos do
   @moduledoc false
 
   import Web3MoveEx.Aptos.Helpers
-  alias Web3MoveEx.Aptos.RPC
+  alias Web3MoveEx.Aptos.{RPC, Account}
+  alias Web3MoveEx.Crypto
+  alias Web3MoveEx.ModuleHandler.Aptos.Coin
 
   @doc """
     `~A"0x1::coin::transfer<CoinType>(address,u64)"f`
@@ -12,9 +14,13 @@ defmodule Web3MoveEx.Aptos do
     Macro.escape(function)
   end
 
-  def get_balance(client, account) do
-    # TODO.
+  def generate_keys() do
+    priv = Crypto.generate_priv()
+    Account.from_private_key(priv)
   end
+
+  def generate_keys(priv), do: Account.from_private_key(priv)
+  def get_balance(client, account), do: Coin.get_coin_store(client, account)
 
   def get_faucet(%{endpoint: endpoint}, account, amount \\ 100000000) do
     cond do
