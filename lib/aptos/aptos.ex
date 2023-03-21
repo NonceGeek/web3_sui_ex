@@ -14,6 +14,8 @@ defmodule Web3MoveEx.Aptos do
     Macro.escape(function)
   end
 
+  defdelegate connect, to: RPC
+
   def generate_keys() do
     priv = Crypto.generate_priv()
     Account.from_private_key(priv)
@@ -88,8 +90,6 @@ defmodule Web3MoveEx.Aptos do
     )
   end
 
-  def hello(sth) when is_atom(sth), do: :atomics
-  def hello(sth) when is_binary(sth), do: :binary
 end
 
 # {:ok, rpc} = Web3MoveEx.Aptos.RPC.connect()
