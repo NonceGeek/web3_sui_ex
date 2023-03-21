@@ -14,6 +14,26 @@ defmodule Web3MoveEx.Aptos do
     Macro.escape(function)
   end
 
+  defmacro sigil_A_new({:<<>>, line, pieces}, []) do
+    res = {:<<>>, line, unescape_tokens(pieces)}
+    IO.puts inspect Macro.escape(res)
+    res
+  end
+
+   # Helper to handle the :ok | :error tuple returned from :elixir_interpolation.unescape_tokens
+  # We need to do this for bootstrapping purposes, actual code can use Macro.unescape_string.
+  defp unescape_tokens(tokens) do
+    :lists.map(
+      fn token ->
+        case is_binary(token) do
+          true -> :elixir_interpolation.unescape_string(token)
+          false -> token
+        end
+      end,
+      tokens
+    )
+  end
+
   defdelegate connect, to: RPC
   defdelegate connect(endpoint), to: RPC
   def generate_keys() do
