@@ -56,11 +56,23 @@ defmodule Web3MoveEx.Aptos.Account do
   end
 
   def do_from_private_key(private_key, address) when is_binary(private_key) do
+    first_bin = Binary.take(private_key, 2)
     priv =
-      private_key
-      |> Binary.drop(2)
-      |> String.to_integer(16)
+      case first_bin do
+        "0x" ->
+
+            private_key
+            |> Binary.drop(2)
+            |> String.to_integer(16)
+
+        _ ->
+            private_key
+            |> Base.encode16(case: :lower)
+            |> String.to_integer(16)
+      end
+
     do_from_private_key(priv, address)
+
   end
 
   defimpl Inspect do
