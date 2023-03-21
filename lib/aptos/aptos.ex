@@ -15,7 +15,7 @@ defmodule Web3MoveEx.Aptos do
   end
 
   defdelegate connect, to: RPC
-
+  defdelegate connect(endpoint), to: RPC
   def generate_keys() do
     priv = Crypto.generate_priv()
     Account.from_private_key(priv)

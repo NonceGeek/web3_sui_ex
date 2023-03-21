@@ -8,8 +8,11 @@ defmodule Web3MoveEx.Aptos.RPC do
 
   defstruct [:endpoint, :client, :chain_id]
 
-  # @endpoint "https://fullnode.devnet.aptoslabs.com/v1"
-  @endpoint "https://fullnode.testnet.aptoslabs.com/v1"
+  @endpoint %{
+      mainnet: "https://fullnode.mainnet.aptoslabs.com/v1",
+      testnet: "https://fullnode.testnet.aptoslabs.com/v1",
+      devnet: "https://fullnode.devnet.aptoslabs.com/v1"
+    }
 
   @faucet %{
     testnet: "https://faucet.testnet.aptoslabs.com",
@@ -74,7 +77,22 @@ defmodule Web3MoveEx.Aptos.RPC do
     end
   end
 
-  def connect(endpoint \\ @endpoint) do
+  def connect() do
+    connect(@endpoint.testnet)
+  end
+  def connect(:testnet) do
+    connect(@endpoint.testnet)
+  end
+
+  def connect(:devnet) do
+    connect(@endpoint.devnet)
+  end
+
+  def connect(:mainnet) do
+    connect(@endpoint.mainnet)
+  end
+
+  def connect(endpoint) do
     client =
       Tesla.client([
         # TODO: convert input/output type
