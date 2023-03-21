@@ -2,26 +2,21 @@ defmodule Web3MoveEx.Aptos do
   @moduledoc false
 
   import Web3MoveEx.Aptos.Helpers
-  alias Web3MoveEx.Aptos.{RPC, Account}
+  alias Web3MoveEx.Aptos.{RPC, Account, Parser}
   alias Web3MoveEx.Crypto
   alias Web3MoveEx.ModuleHandler.Aptos.Coin
 
   @doc """
-    `~A"0x1::coin::transfer<CoinType>(address,u64)"f`
+    `~a"0x1::coin::transfer<CoinType>(address,u64)"`
   """
-  defmacro sigil_A({:<<>>, _, [string]}, _modifiers) do
-    {:ok, function} = Web3MoveEx.Aptos.Parser.parse_function(string)
-    Macro.escape(function)
+
+  defmacro sigil_a({:<<>>, line, pieces}, []) do
+    quote do
+      unquote({:<<>>, line, unescape_tokens(pieces)})
+      |> Parser.parse_function()
+    end
   end
 
-  defmacro sigil_A_new({:<<>>, line, pieces}, []) do
-    res = {:<<>>, line, unescape_tokens(pieces)}
-    IO.puts inspect Macro.escape(res)
-    res
-  end
-
-   # Helper to handle the :ok | :error tuple returned from :elixir_interpolation.unescape_tokens
-  # We need to do this for bootstrapping purposes, actual code can use Macro.unescape_string.
   defp unescape_tokens(tokens) do
     :lists.map(
       fn token ->
