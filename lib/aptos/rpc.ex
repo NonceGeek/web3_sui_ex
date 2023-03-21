@@ -1,12 +1,20 @@
 defmodule Web3MoveEx.Aptos.RPC do
   @moduledoc """
     Copy From: https://github.com/myastrallabs/stormstout
+
+    Api Docs: https://aptos.dev/nodes/aptos-api-spec/#/
   """
+  alias Utils.ExHttp
 
   defstruct [:endpoint, :client, :chain_id]
 
   # @endpoint "https://fullnode.devnet.aptoslabs.com/v1"
   @endpoint "https://fullnode.testnet.aptoslabs.com/v1"
+
+  @faucet %{
+    testnet: "https://faucet.testnet.aptoslabs.com",
+    devnet: "https://faucet.devnet.aptoslabs.com"
+  }
 
   @doc """
     {:ok, client} = Aptos.RPC.connect()
@@ -18,7 +26,7 @@ defmodule Web3MoveEx.Aptos.RPC do
       )
   """
   def get_token_data(client, creator, collection_name, token_name) do
-    with {:ok, result} <- get_account_resource(client, creator, "0x3::token::Collections") do
+    with {:ok, result} <- get_resource(client, creator, "0x3::token::Collections") do
       %{handle: handle} = result.data.token_data
 
       token_data_id = %{
@@ -46,7 +54,7 @@ defmodule Web3MoveEx.Aptos.RPC do
     )
   """
   def get_collection_data(client, account, collection_name) do
-    with {:ok, result} <- get_account_resource(client, account, "0x3::token::Collections") do
+    with {:ok, result} <- get_resource(client, account, "0x3::token::Collections") do
       %{handle: handle} = result.data.collection_data
 
       table_key = %{
@@ -82,6 +90,18 @@ defmodule Web3MoveEx.Aptos.RPC do
     end
   end
 
+  def connect(:faucet, network_type) do
+    endpoint = Map.get(@faucet, network_type)
+    client =
+      Tesla.client([
+        {Tesla.Middleware.BaseUrl, endpoint},
+        # {Tesla.Middleware.Headers, [{"content-type", "application/json"}]},
+        {Tesla.Middleware.JSON, engine_opts: [keys: :atoms]}
+      ])
+
+    {:ok, %__MODULE__{client: client, endpoint: endpoint}}
+  end
+
   defp get(%{client: client}, path, options \\ []) do
     with {:ok, %{status: 200, body: resp_body}} <- Tesla.get(client, path, options) do
       {:ok, resp_body}
@@ -112,12 +132,17 @@ defmodule Web3MoveEx.Aptos.RPC do
     get(client, "/accounts/#{address}")
   end
 
-  def get_account_resources(client, address, query \\ []) do
+  def get_resources(client, address, query \\ []) do
     get(client, "/accounts/#{address}/resources", query: query)
   end
 
-  def get_account_resource(client, address, resource_type, query \\ []) do
-    get(client, "/accounts/#{address}/resource/#{resource_type}", query: query)
+  def get_resource(client, address, resource_type) do
+    path = build_resource(client, address, resource_type)
+    ExHttp.http_get(path)
+  end
+
+  def build_resource(%{endpoint: endpoint}, address, resource_type) do
+    "#{endpoint}/accounts/#{address}/resource/#{resource_type}"
   end
 
   # Transactions
@@ -192,5 +217,9 @@ defmodule Web3MoveEx.Aptos.RPC do
     post(client, "/transactions", signed_transaction_in_bcs,
       headers: [{"content-type", "application/x.aptos.signed_transaction+bcs"}]
     )
+  end
+
+  def get_faucet(client, address, amount \\ 100000000) do
+    post(client, "/mint?amount=#{amount}&address=#{address}", "")
   end
 end

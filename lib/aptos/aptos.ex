@@ -12,6 +12,26 @@ defmodule Web3MoveEx.Aptos do
     Macro.escape(function)
   end
 
+  def get_balance(client, account) do
+    # TODO.
+  end
+
+  def get_faucet(%{endpoint: endpoint}, account, amount \\ 100000000) do
+    cond do
+      String.contains?(endpoint, "testnet") ->
+        {:ok, client_f} = RPC.connect(:faucet, :testnet)
+        RPC.get_faucet(client_f, account, amount)
+
+      String.contains?(endpoint, "devnet") ->
+        {:ok, client_f} = RPC.connect(:faucet, :devnet)
+        RPC.get_faucet(client_f, account, amount)
+
+      true ->
+        # TODO: supported local network.
+        raise "Network not supported"
+    end
+  end
+
   # usefull APIs
   def load_account(client, account) do
     with {:ok, loaded_account} <- RPC.get_account(client, account),

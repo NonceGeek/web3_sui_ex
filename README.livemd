@@ -9,7 +9,7 @@
 > * hello_blockchain: [0xcd6e69ff3c22db037584fb1650f7ca75df721fb0143690fb33f2f3bd0c1fe5bd](https://explorer.aptoslabs.com/account/0xcd6e69ff3c22db037584fb1650f7ca75df721fb0143690fb33f2f3bd0c1fe5bd/modules)
 
 ```elixir
-Mix.install([:poison, :jason, {:web3_move_ex, "~> 0.3.1"}])
+Mix.install([:poison, :jason, {:web3_move_ex, "~> 0.3.2"}])
 ```
 
 <!-- livebook:{"output":true} -->
@@ -186,7 +186,7 @@ by adding `web3_move_ex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:web3_move_ex, "~> 0.2.0"}
+    {:web3_move_ex, "~> 0.3.2"}
   ]
 end
 ```
@@ -248,7 +248,7 @@ account
 ```
 
 ```elixir
-# {:ok, account_ol} = Aptos.load_account(rpc, account)
+# {:ok, account_ol} = Aptos.load_account(client, account)
 # account_ol
 # it will works if account is actived(has any APT)
 ```
@@ -264,7 +264,7 @@ nil
 #### 4.3.1 Read the resources of the Acct
 
 ```elixir
-Aptos.RPC.get_account_resources(rpc, "0x3")
+Aptos.RPC.get_resources(client, "0x3")
 ```
 
 <!-- livebook:{"output":true} -->
@@ -336,7 +336,7 @@ Aptos.RPC.get_account_resources(rpc, "0x3")
 #### 4.3.2 Read resource by resource_type
 
 ```elixir
-Web3MoveEx.Aptos.RPC.get_account_resource(rpc, "0x3", "0x1::account::Account")
+Web3MoveEx.Aptos.RPC.get_resource(client, "0x3", "0x1::account::Account")
 ```
 
 <!-- livebook:{"output":true} -->
@@ -365,7 +365,7 @@ Web3MoveEx.Aptos.RPC.get_account_resource(rpc, "0x3", "0x1::account::Account")
 
 ```elixir
 Web3MoveEx.Aptos.RPC.get_table_item(
-  rpc,
+  client,
   "0xe30b2ff6a515aa04729522512d50147d5cdd52ee3741c26ff1b97306b0b2b148",
   "0x1::string::String",
   "0x65f4a0954aa6e68d2381ff98b7676df2fe57beee3ca37a4a8a57fa621c1db872::addr_info::AddrInfo",
@@ -400,7 +400,7 @@ f = ~A"0x1::coin::transfer<CoinType>(address,u64)"f
 
 payload = Aptos.call_function(f, ["0x1::aptos_coin::AptosCoin"], [account.address, 100])
 
-Aptos.submit_txn(rpc, account, payload)
+Aptos.submit_txn(client, account, payload)
 ```
 
 <!-- livebook:{"output":true} -->
@@ -570,7 +570,7 @@ Web3MoveEx.Starcoin.Caller.Contract.get_resource(
 {:ok,
  %{
    id: 1,
-   jsonrpc: "2.0",
+   jsonclient: "2.0",
    result: %{
      abilities: 12,
      type_: "<deploy_address>::MyCounter::Counter",

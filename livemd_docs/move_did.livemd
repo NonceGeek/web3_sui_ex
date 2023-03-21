@@ -74,6 +74,6 @@ Aptos.submit_txn(rpc, account_ol, payload)
 # Check events
 ## build event path.
 ### get the register_events(index)
-Aptos.RPC.build_event_path(rpc, "0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8", "0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8::addr_aggregator::CreateAddrAggregatorEventSet", "create_addr_aggregator_events")
-
+Aptos.RPC.build_event_path(client, "0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8", "0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8::addr_aggregator::CreateAddrAggregatorEventSet", "create_addr_aggregator_events")
+Aptos.RPC.get_events(client, "0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8", "0xdea79e568e00066f60fbfe6ac6d8a9ef2fabbeadc6aae1ec9158d50f6efe4ac8::addr_aggregator::CreateAddrAggregatorEventSet", "create_addr_aggregator_events")
 ```
