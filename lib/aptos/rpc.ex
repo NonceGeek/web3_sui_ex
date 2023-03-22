@@ -155,28 +155,28 @@ defmodule Web3MoveEx.Aptos.RPC do
   end
 
   def get_resource(client, address, resource_type) do
-    path = build_resource(client, address, resource_type)
+    path = build_resource_path(client, address, resource_type)
     ExHttp.http_get(path)
   end
 
-  def build_resource(%{endpoint: endpoint}, address, resource_type) do
+  def build_resource_path(%{endpoint: endpoint}, address, resource_type) do
     "#{endpoint}/accounts/#{address}/resource/#{resource_type}"
   end
 
   # Transactions
-  def get_transaction_by_hash(client, hash) do
+  def get_tx_by_hash(client, hash) do
     get(client, "/transactions/by_hash/#{hash}")
   end
 
-  def check_transaction_by_hash(client, hash, times \\ 3) do
-    case get_transaction_by_hash(client, hash) do
+  def check_tx_res_by_hash(client, hash, times \\ 3) do
+    case get_tx_by_hash(client, hash) do
       {:ok, result} ->
         result.success
 
       {:error, _} ->
         if times > 0 do
           Process.sleep(1000)
-          check_transaction_by_hash(client, hash, times - 1)
+          check_tx_res_by_hash(client, hash, times - 1)
         else
           false
         end

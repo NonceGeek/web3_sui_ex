@@ -3,6 +3,7 @@ defmodule Web3MoveEx.Aptos.Account do
 
   defstruct [
     :address,
+    :address_hex,
     :auth_key,
     :signing_key,
     :priv_key,
@@ -23,17 +24,22 @@ defmodule Web3MoveEx.Aptos.Account do
 
   def from_address(address) do
     with {:ok, address} <- normalize_address(address) do
-      {:ok, %__MODULE__{address: address}}
+      addr_hex = addr_to_addr_hex(address)
+      {:ok, %__MODULE__{address: address, address_hex: addr_hex}}
     end
   end
+
+  def addr_to_addr_hex(addr), do: "0x#{Base.encode16(addr, case: :lower)}"
 
   def from_signing_key(signing_key, address \\ nil) do
     auth_key = sha3_256(signing_key.public_key <> <<0>>)
 
     with {:ok, address} <- normalize_address(address || auth_key) do
+      addr_hex = addr_to_addr_hex(address)
       {:ok,
        %__MODULE__{
          address: address,
+         address_hex: addr_hex,
          signing_key: signing_key,
          auth_key: auth_key
        }}
@@ -47,10 +53,12 @@ defmodule Web3MoveEx.Aptos.Account do
     with {:ok, signing_key} <- Web3MoveEx.Aptos.SigningKey.new(private_key) do
       {:ok, acct} = from_signing_key(signing_key, address)
       private_key_hex = "0x#{private_key |> Integer.to_string(16) |> String.downcase()}"
+      addr_hex = addr_to_addr_hex(acct.address)
       {:ok,
         acct
         |> Map.put(:priv_key, private_key)
         |> Map.put(:priv_key_hex, private_key_hex)
+        |> Map.put(:address_hex, addr_hex)
       }
     end
   end

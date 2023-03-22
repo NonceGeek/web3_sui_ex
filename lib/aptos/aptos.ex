@@ -105,23 +105,27 @@ defmodule Web3MoveEx.Aptos do
     )
   end
 
+  # +--------+
+  # | Events |
+  # +--------+
+
+  defdelegate get_events(client, event_key), to: RPC
+  defdelegate get_events(client, address, event_handle, field, query \\ [limit: 10]), to: RPC
+  defdelegate build_event_path(client, address, event_handle, field), to: RPC
+
+  # +-----------+
+  # | Resources |
+  # +-----------+
+
+  defdelegate get_resources(client, address, query \\ []), to: RPC
+  defdelegate get_resource(client, address, resource_type), to: RPC
+  defdelegate build_resource_path(client, address, resource_type), to: RPC
+
+  # +-----+
+  # | Txs |
+  # +-----+
+
+  defdelegate get_tx_by_hash(client, hash), to: RPC
+  defdelegate check_tx_res_by_hash(client, hash, times \\ 3), to: RPC
+
 end
-
-# {:ok, rpc} = Web3MoveEx.Aptos.RPC.connect()
-
-# {:ok, account} = Web3MoveEx.Aptos.Account.from_private_key(your_private_key)
-# {:ok, account} = Web3MoveEx.Aptos.load_account(rpc, account)
-
-# f = %Web3MoveEx.Aptos.Types.Function{
-#   address: 0x1,
-#   is_entry: true,
-#   module: "coin",
-#   name: "transfer",
-#   params: [:address, :u64, {:vector, :string}],
-#   return: [],
-#   type_params: [%{"constraints" => []}],
-#   visibility: :public
-# }
-
-# payload = Web3MoveEx.Aptos.call_function(f, ["0x1::aptos_coin::AptosCoin"], [account.address, 100, ["abc","456"])
-# Web3MoveEx.Aptos.submit_txn(rpc, account, payload)
