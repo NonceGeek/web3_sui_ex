@@ -45,7 +45,8 @@ defmodule Web3MoveEx.MixProject do
       {:nimble_parsec, "~> 1.2"},
       {:bcs, "~> 0.1.0"},
       {:tesla, "~> 1.4"},
-      {:hackney, "~> 1.17"}
+      {:hackney, "~> 1.17"},
+      {:sui, git: "https://github.com/yangcancai/sui.git", branch: "main"}
     ]
   end
 end
