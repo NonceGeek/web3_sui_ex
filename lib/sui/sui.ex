@@ -30,7 +30,7 @@ def get_balance(client \\ nil, sui_address) do
   def transfer(client, signer, to, object_id, gas_budget, gas \\ nil ) do
     gas = client |> select_gas(signer, gas)
     gas_price = client |> RPC.suix_getReferenceGasPrice()
-    kind = ""
+    kind = Web3MoveEx.Sui.Bcs.TransactionKind.transfer_object(to, object_ref(object_id))
     transaction_data = Web3MoveEx.Sui.Bcs.TransactionData.new(kind, signer, gas, gas_budget, gas_price)
     intent_msg = %Web3MoveEx.Sui.Bcs.TransactionData.IntentMessage{intent: Web3MoveEx.Sui.Bcs.TransactionData.Intent.default,
     data: transaction_data }
@@ -40,8 +40,11 @@ def get_balance(client \\ nil, sui_address) do
   def select_gas(client, _signer, nil) do
      :ok
   end
-  def select_gas(client, signer, gas) do
-    {:ok, %{data: %{objectId: _, version: ver, digest: digest}}} = client |> RPC.sui_get_object(gas)
+  def select_gas(client, _signer, gas) do
+     object_ref(client, gas)
+  end
+  def object_ref(client, object_id) do
+     {:ok, %{data: %{objectId: _, version: ver, digest: digest}}} = client |> RPC.sui_get_object(object_id)
     {_, object_id} = object_id |> String.split_at(2)
     %ObjectRef{ref: {:base64.decode(object_id), ver, Base58.decode(digest)}}
   end

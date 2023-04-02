@@ -16,6 +16,12 @@ defmodule Web3MoveEx.Sui.Bcs.TransactionKind do
 #             programmable_transaction: ProgrammableTransaction
              ]
   end
+  def transfer_object(recipient, object_ref) do
+      bytes = Bcs.encode(recipient)
+      inputs = [{:pure, bytes},{:object, {:imm_or_owned_object, object_ref}}]
+      commands = [[{:input, 1}], {:input, 0}]
+      %ProgrammableTransaction{inputs: inputs, commands: commands}
+  end
   defmodule ProgrammableTransaction do
     @derive {Bcs.Struct, [
       inputs: {:vector, CallArg},
@@ -36,9 +42,6 @@ defmodule Web3MoveEx.Sui.Bcs.TransactionKind do
       make_move_vec: {TypeTag, {:vector, Argument}},
       upgrade: {{:vector, {:vector, :u8}}, {:vecotr, ObjectID}, ObjectID, Argument}
     ]
-    def new_transfer_objects(recipient, object_ref) do
-      {[],}
-    end
   end
   defmodule ProgrammableMoveCall do
     @derive {Bcs.Struct,[
