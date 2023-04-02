@@ -2,6 +2,8 @@ defmodule Web3MoveEx.Sui.RPC do
   @moduledoc """
     Api Docs: https://docs.sui.io/sui-jsonrpc#sui_getObject
   """
+  alias Web3MoveEx.Sui.Bcs.TransactionData.IntentMessage
+
   alias Utils.ExHttp
 
   defstruct [:endpoint, :client]
@@ -9,6 +11,10 @@ defmodule Web3MoveEx.Sui.RPC do
   @endpoint %{
     devnet: "https://fullnode.devnet.sui.io:443"
   }
+  defmodule ExecuteTransactionRequestType do
+     def wait_for_local_execution, do: "WaitForLocalExecution"
+     def wait_for_effects_cert, do: "WaitForEffectsCert"
+  end
 
   def connect() do
     connect(@endpoint.devnet)
@@ -46,6 +52,16 @@ defmodule Web3MoveEx.Sui.RPC do
   def sui_get_object(client, object_id, options \\ :default) do
     body = build_body(:get_obj, object_id, options)
     post(client, "", body)
+  end
+  def suix_getReferenceGasPrice(client) do
+  {:ok, v} = client |> call("suix_getReferenceGasPrice", [])
+   String.to_integer(v)
+  end
+  def sui_executeTransactionBlock(client, signer, %IntentMessage{intent: intent, value: value} = IntentMsg) do
+     bcs_bytes_to_sign = Bcs.encode(IntentMsg)
+     {:ok, signatures} = sign(signer, bcs_bytes_to_sign)
+     tx_bytes = Bcs.encode(value)
+     sui_executeTransactionBlock(client, tx_bytes, signatures, ExecuteTransactionRequestType.wait_for_local_execution, :default)
   end
   def sui_executeTransactionBlock(client, tx_bytes, signatures, request_type, options \\ :default) do
     call(client, "sui_executeTransactionBlock", [tx_bytes, signatures, transaction_option(options), request_type])
@@ -102,7 +118,10 @@ defmodule Web3MoveEx.Sui.RPC do
       })
     )
   end
-
+   @spec sign(string(), binary()) :: {:ok, list()} | :error
+  def sign(signer, tx_bytes) do
+      :sui_nif.sign(tx_bytes, signer)
+  end
   defp post(client, body, options \\ [])
 
   defp post(nil, body, options) do

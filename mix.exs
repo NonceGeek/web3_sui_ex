@@ -48,6 +48,7 @@ defmodule Web3MoveEx.MixProject do
       {:hackney, "~> 1.17"},
       {:sui, git: "https://github.com/yangcancai/sui.git", branch: "main"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:exbase58, "~> 1.0.2"}
     ]
   end
 end

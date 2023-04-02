@@ -3,6 +3,9 @@ defmodule Web3MoveEx.Sui.Bcs.SuiAddress do
 
 @derive {Bcs.Struct,
       [
-        [:u8 | 20]
+        val: [:u8 | 32]
       ]}
+ defstruct [
+    :val
+ ]
 end
