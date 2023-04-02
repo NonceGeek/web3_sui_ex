@@ -3,7 +3,7 @@ defmodule Web3MoveEx.ModuleHandler.Aptos.Coin do
     0x1::coin
   """
   # alias Web3MoveEx.Aptos
-  alias Web3MoveEx.Aptos.RPC
+  alias Web3AptosEx.Aptos.RPC
 
   @resources %{
     coin_store: "0x1::coin"

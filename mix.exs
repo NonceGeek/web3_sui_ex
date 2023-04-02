@@ -7,7 +7,7 @@ defmodule Web3MoveEx.MixProject do
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      version: "0.4.0",
+      version: "0.5.0",
       description: "cool sdk for Chains using MOVE, such as: aptos, sui, rooch",
       package: package()
     ]
@@ -46,7 +46,8 @@ defmodule Web3MoveEx.MixProject do
       {:bcs, "~> 0.1.0"},
       {:tesla, "~> 1.4"},
       {:hackney, "~> 1.17"},
-      {:sui, git: "https://github.com/yangcancai/sui.git", branch: "main"}
+      {:sui, git: "https://github.com/yangcancai/sui.git", branch: "main"},
+      {:web3_aptos_ex, "~> 1.0.2"}
     ]
   end
 end
