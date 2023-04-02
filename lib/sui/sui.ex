@@ -26,4 +26,8 @@ def get_balance(client \\ nil, sui_address) do
   def get_all_coins(client \\ nil, sui_address) do
     client |> RPC.call("sui_getAllCoins", [sui_address])
   end
+
+  def sign(signer, tx_bytes) do
+
+  end
 end
