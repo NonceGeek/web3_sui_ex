@@ -10,13 +10,13 @@ defmodule Web3MoveEx.Sui do
   alias Web3MoveEx.Sui.Bcs.IntentMessage.Intent
 
   @spec generate_priv(key_schema()) ::
-          :error | {:ok, {sui_address(), priv(), key_schema(), phrase()}}
+          :error | {:ok, Web2MoveEx.Sui.Account}
   def generate_priv(key_schema \\ "ed25519") do
-    :sui_nif.new(%{:key_schema => key_schema})
+      Web2MoveEx.Sui.Account.new(key_schema)
   end
 
   def get_balance(client \\ nil, sui_address) do
-    res = client |> RPC.call("sui_getAllBalances", [sui_address])
+    res = client |> RPC.call("suix_getAllBalances", [sui_address])
 
     case res do
       {:ok, []} ->
@@ -40,25 +40,25 @@ defmodule Web3MoveEx.Sui do
     client |> RPC.call("sui_getAllCoins", [sui_address])
   end
 
-  def transfer(client, signer, to, object_id, gas_budget, gas \\ nil) do
-    gas = client |> select_gas(signer, gas)
+  def transfer(client, account, to, object_id, gas_budget, gas \\ nil) do
+    gas = client |> select_gas(account, gas)
     gas_price = client |> RPC.suix_getReferenceGasPrice()
     kind = Web3MoveEx.Sui.Bcs.TransactionKind.transfer_object(to, object_ref(client, object_id))
 
     transaction_data =
-      Web3MoveEx.Sui.Bcs.TransactionData.new(kind, signer, gas, gas_budget, gas_price)
+      Web3MoveEx.Sui.Bcs.TransactionData.new(kind, account, gas, gas_budget, gas_price)
 
     intent_msg = %IntentMessage{intent: Intent.default(), data: transaction_data}
-    client |> RPC.sui_executeTransactionBlock(signer, intent_msg)
+    client |> RPC.sui_executeTransactionBlock(account, intent_msg)
   end
 
-  def select_gas(client, signer, gas \\ nil)
+  def select_gas(client, account, gas \\ nil)
 
-  def select_gas(client, _signer, nil) do
+  def select_gas(client, _account, nil) do
     :ok
   end
 
-  def select_gas(client, _signer, gas) do
+  def select_gas(client, _account, gas) do
     object_ref(client, gas)
   end
 
