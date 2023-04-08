@@ -10,13 +10,13 @@ defmodule Web3MoveEx.Sui do
   alias Web3MoveEx.Sui.Bcs.IntentMessage.Intent
 
   @spec generate_priv(key_schema()) ::
-          :error | {:ok, Web2MoveEx.Sui.Account}
+          :error | {:ok, Web3MoveEx.Sui.Account}
   def generate_priv(key_schema \\ "ed25519") do
-      Web2MoveEx.Sui.Account.new(key_schema)
+      Web3MoveEx.Sui.Account.new(key_schema)
   end
 
-  def get_balance(client \\ nil, sui_address) do
-    res = client |> RPC.call("suix_getAllBalances", [sui_address])
+  def get_balance(client \\ nil, sui_address_hex) do
+    res = client |> RPC.call("suix_getAllBalances", [sui_address_hex])
 
     case res do
       {:ok, []} ->
@@ -50,6 +50,12 @@ defmodule Web3MoveEx.Sui do
 
     intent_msg = %IntentMessage{intent: Intent.default(), data: transaction_data}
     client |> RPC.sui_executeTransactionBlock(account, intent_msg)
+  end
+  def unsafe_transfer(client, %Web3MoveEx.Sui.Account{sui_address_hex: sui_address}=account, object_id, gas \\ "null", gas_budget, recipient) do
+      {:ok, %{txBytes: tx_bytes}} = client |> RPC.unsafe_transferObject(sui_address,object_id, gas, gas_budget, recipient)
+      flag =  Bcs.encode(Web3MoveEx.Sui.Bcs.IntentMessage.Intent.default)
+      {:ok, signatures} = RPC.sign(account, flag <> :base64.decode(tx_bytes))
+      client |> RPC.sui_executeTransactionBlock(tx_bytes, signatures, Web3MoveEx.Sui.RPC.ExecuteTransactionRequestType.wait_for_local_execution())
   end
 
   def select_gas(client, account, gas \\ nil)

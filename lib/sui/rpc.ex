@@ -5,6 +5,7 @@ defmodule Web3MoveEx.Sui.RPC do
   alias Web3MoveEx.Sui.Bcs.IntentMessage
 
   alias Utils.ExHttp
+  require Logger
 
   defstruct [:endpoint, :client]
 
@@ -76,8 +77,8 @@ defmodule Web3MoveEx.Sui.RPC do
       :default
     )
   end
-
-  def sui_executeTransactionBlock(client, tx_bytes, signatures, request_type, options \\ :default) do
+    def sui_executeTransactionBlock(client, tx_bytes, signatures, request_type, options \\ :default) do
+      Logger.debug("tx_bytes = #{inspect(tx_bytes)}, signatures=#{inspect(signatures)}, request_type=#{request_type}")
     call(client, "sui_executeTransactionBlock", [
       tx_bytes,
       signatures,
@@ -85,6 +86,11 @@ defmodule Web3MoveEx.Sui.RPC do
       request_type
     ])
   end
+
+def unsafe_transferObject(client, signer, object_id, gas, gas_budget, recipient) do
+    call(client, "unsafe_transferObject", [signer, object_id, gas, gas_budget, recipient])
+  end
+
 
   def transaction_option(:default) do
     %{
@@ -139,9 +145,9 @@ defmodule Web3MoveEx.Sui.RPC do
     )
   end
 
-  @spec sign(string(), binary()) :: {:ok, list()} | :error
-  def sign(signer, tx_bytes) do
-    :sui_nif.sign(tx_bytes, signer)
+  @spec sign(Web3MoveEx.Sui.Account, binary()) :: {:ok, list()} | :error
+  def sign(%Web3MoveEx.Sui.Account{priv_key_base64: priv_key_base64} = account, tx_bytes) do
+    :sui_nif.sign(tx_bytes, priv_key_base64)
   end
 
   defp post(client, body, options \\ [])
