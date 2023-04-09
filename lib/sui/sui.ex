@@ -5,17 +5,16 @@ defmodule Web3MoveEx.Sui do
   @type phrase() :: String.t()
   @type priv() :: String.t()
   @type sui_address() :: String.t()
-  alias Web3MoveEx.Sui.Bcs.TransactionKind.ObjectRef
+  # alias Web3MoveEx.Sui.Bcs.TransactionKind.ObjectRef
   alias Web3MoveEx.Sui.Bcs.IntentMessage
   alias Web3MoveEx.Sui.Bcs.IntentMessage.Intent
 
-  @spec gen_acct(key_schema()) :: :error | {:ok, {sui_address(), priv(), key_schema(), phrase()}}
   def gen_acct(key_schema \\ :ed25519) do
-    {:ok, {sui_addr, priv, _key_schema, phrase}} = :sui_nif.new(%{:key_schema => Atom.to_string(key_schema)})
-    {:ok, %{addr: sui_addr, priv: priv, key_schema: key_schema, phrase: phrase}}
+    Web3MoveEx.Sui.Account.new(Atom.to_string(key_schema))
   end
+
   def get_balance(client \\ nil, sui_address) do
-    res = client |> RPC.call("sui_getAllBalances", [sui_address])
+    res = client |> RPC.call("suix_getAllBalances", [sui_address])
     case res do
       {:ok, []} ->
         {:ok,
@@ -35,7 +34,7 @@ defmodule Web3MoveEx.Sui do
   end
 
   def get_all_coins(client \\ nil, sui_address) do
-    client |> RPC.call("sui_getAllCoins", [sui_address])
+    client |> RPC.call("suix_getAllCoins", [sui_address])
   end
 
   def move_call(

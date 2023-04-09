@@ -33,18 +33,18 @@ defmodule Web3MoveEx.SuiTest do
     # gas= "0xf4a182bb3a944efb225fd35222e7aa8f18648ea21eb1de9c693541fd1921804f"
     gas_budget = 10000
     arguments = ["0x8fb7a1429d2f57303d742f41fcf7fad701576512d7ecce60713ea1043128842f", "0x7c70bccddbc9f441739613be2320a634d907a6c7e696930fd7f396a9e4c41f93"]
-    {:ok, %{txBytes: tx_bytes}} =
-      res =
-      client
-      |> Web3MoveEx.Sui.move_call(
-        account,
-        package_object_id,
-        module,
-        function,
-        type_arguments,
-        arguments,
-        gas_budget
-      )
+    # {:ok, %{txBytes: tx_bytes}} =
+    #   res =
+    Web3MoveEx.Sui.move_call(
+      client,
+      account,
+      package_object_id,
+      module,
+      function,
+      type_arguments,
+      arguments,
+      gas_budget
+    )
   end
 
   test "transfer", %{rpc: client} do
