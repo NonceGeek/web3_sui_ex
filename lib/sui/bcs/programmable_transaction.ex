@@ -5,8 +5,8 @@ defmodule Web3MoveEx.Sui.Bcs.ProgrammableTransaction do
 
   @derive {Bcs.Struct,
            [
-             inputs: {:vector, CallArg},
-             commands: {:vector, Command}
+             inputs: [CallArg],
+             commands: [Command]
            ]}
   defstruct [
     :inputs,

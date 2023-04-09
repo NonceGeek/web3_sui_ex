@@ -6,11 +6,11 @@ defmodule Web3MoveEx.Sui.Bcs.ProgammableMoveCall do
 
   @derive {Bcs.Struct,
            [
-             package: object_id,
-             module: identifier,
-             function: identifier,
-             type_arguments: {:vector, TypeTag},
-             arguments: {:vector, Argument}
+             package: object_id(),
+             module: identifier(),
+             function: identifier(),
+             type_arguments: [TypeTag],
+             arguments: [Argument]
            ]}
   defstruct [
     :package,

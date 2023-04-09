@@ -52,7 +52,7 @@ defmodule Web3MoveEx.Sui.RPC do
 
   def sui_get_object(client, object_id, options \\ :default) do
     body = build_body(:get_obj, object_id, options)
-    post(client, "", body)
+    post(client, body)
   end
 
   def suix_getReferenceGasPrice(client) do
@@ -63,22 +63,26 @@ defmodule Web3MoveEx.Sui.RPC do
   def sui_executeTransactionBlock(
         client,
         signer,
-        %IntentMessage{intent: intent, data: value} = intent_msg
+        %IntentMessage{intent: _intent, data: value} = intent_msg
       ) do
     bcs_bytes_to_sign = Bcs.encode(intent_msg)
     {:ok, signatures} = sign(signer, bcs_bytes_to_sign)
-    tx_bytes = Bcs.encode(value)
+    tx_bytes = Bcs.encode(value, Web3MoveEx.Sui.Bcs.TransactionData)
 
     sui_executeTransactionBlock(
       client,
-      tx_bytes,
+      :base64.encode(tx_bytes),
       signatures,
       ExecuteTransactionRequestType.wait_for_local_execution(),
       :default
     )
   end
-    def sui_executeTransactionBlock(client, tx_bytes, signatures, request_type, options \\ :default) do
-      Logger.debug("tx_bytes = #{inspect(tx_bytes)}, signatures=#{inspect(signatures)}, request_type=#{request_type}")
+
+  def sui_executeTransactionBlock(client, tx_bytes, signatures, request_type, options \\ :default) do
+    Logger.debug(
+      "tx_bytes = #{inspect(tx_bytes)}, signatures=#{inspect(signatures)}, request_type=#{request_type}"
+    )
+
     call(client, "sui_executeTransactionBlock", [
       tx_bytes,
       signatures,
@@ -87,10 +91,32 @@ defmodule Web3MoveEx.Sui.RPC do
     ])
   end
 
-def unsafe_transferObject(client, signer, object_id, gas, gas_budget, recipient) do
-    call(client, "unsafe_transferObject", [signer, object_id, gas, gas_budget, recipient])
+  def unsafe_moveCall(
+        client,
+        signer,
+        package_object_id,
+        module,
+        function,
+        type_arguments,
+        arguments,
+        gas,
+        gas_budget
+      ) do
+    call(client, "unsafe_moveCall", [
+      signer,
+      package_object_id,
+      module,
+      function,
+      type_arguments,
+      arguments,
+      gas,
+      gas_budget
+    ])
   end
 
+  def unsafe_transferObject(client, signer, object_id, gas, gas_budget, recipient) do
+    call(client, "unsafe_transferObject", [signer, object_id, gas, gas_budget, recipient])
+  end
 
   def transaction_option(:default) do
     %{
@@ -158,7 +184,7 @@ def unsafe_transferObject(client, signer, object_id, gas, gas_budget, recipient)
   end
 
   defp post(%{client: client}, body, options) do
-    with {:ok, %{body: resp_body}} <- Tesla.post(client, "", body, options) do
+    with {:ok, %{body: resp_body}} <- Tesla.post(client, "", reset_req(body), options) do
       case resp_body do
         %{error: %{code: _, message: message}} -> {:error, message}
         %{result: res} -> {:ok, res}
@@ -167,4 +193,10 @@ def unsafe_transferObject(client, signer, object_id, gas, gas_budget, recipient)
       {:error, error} -> {:error, error}
     end
   end
+
+  defp reset_req(body) when is_binary(body) do
+    body
+  end
+
+  defp reset_req(body), do: Jason.encode!(body)
 end

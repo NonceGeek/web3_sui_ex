@@ -3,7 +3,7 @@ defmodule Web3MoveEx.Sui.Bcs.GasData do
 
   @derive {Bcs.Struct,
            [
-             payment: object_ref(),
+             payment: [object_ref()],
              owner: sui_address(),
              price: :u64,
              budget: :u64

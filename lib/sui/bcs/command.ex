@@ -7,10 +7,10 @@ defmodule Web3MoveEx.Sui.Bcs.Command do
 
   use Bcs.TaggedEnum,
     movecall: ProgrammableMoveCall,
-    transfer_objects: {{:vector, Argument}, Argument},
-    split_coins: {Argument, {:vector, Argument}},
-    merge_coins: {Argument, {:vector, Argument}},
-    publish: {{:vector, {:vector, :u8}}, {:vector, object_id}},
-    make_move_vec: {TypeTag, {:vector, Argument}},
-    upgrade: {{:vector, {:vector, :u8}}, {:vecotr, object_id}, object_id, Argument}
+    transfer_objects: {[Argument], Argument},
+    split_coins: {Argument, [Argument]},
+    merge_coins: {Argument, [Argument]},
+    publish: {[:u8], [object_id()]},
+    make_move_vec: {TypeTag, [Argument]},
+    upgrade: {[[:u8]], [object_id()], object_id(), Argument}
 end
