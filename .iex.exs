@@ -1,2 +1,2 @@
-alias Web3MoveEx.Starcoin.Caller.{Contract, Chain}
-import Web3MoveEx.Aptos
+import Web3AptosEx.Aptos
+alias Web3AptosEx.Aptos

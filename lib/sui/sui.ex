@@ -1,7 +1,7 @@
 defmodule Web3MoveEx.Sui do
   alias Web3MoveEx.Sui.RPC
   @moduledoc false
-  @type key_schema() :: String.t()
+  @type key_schema() :: atom()
   @type phrase() :: String.t()
   @type priv() :: String.t()
   @type sui_address() :: String.t()
@@ -9,15 +9,13 @@ defmodule Web3MoveEx.Sui do
   alias Web3MoveEx.Sui.Bcs.IntentMessage
   alias Web3MoveEx.Sui.Bcs.IntentMessage.Intent
 
-  @spec generate_priv(key_schema()) ::
-          :error | {:ok, Web3MoveEx.Sui.Account}
-  def generate_priv(key_schema \\ "ed25519") do
-    Web3MoveEx.Sui.Account.new(key_schema)
+  @spec gen_acct(key_schema()) :: :error | {:ok, {sui_address(), priv(), key_schema(), phrase()}}
+  def gen_acct(key_schema \\ :ed25519) do
+    {:ok, {sui_addr, priv, _key_schema, phrase}} = :sui_nif.new(%{:key_schema => Atom.to_string(key_schema)})
+    {:ok, %{addr: sui_addr, priv: priv, key_schema: key_schema, phrase: phrase}}
   end
-
-  def get_balance(client \\ nil, sui_address_hex) do
-    res = client |> RPC.call("suix_getAllBalances", [sui_address_hex])
-
+  def get_balance(client \\ nil, sui_address) do
+    res = client |> RPC.call("sui_getAllBalances", [sui_address])
     case res do
       {:ok, []} ->
         {:ok,
