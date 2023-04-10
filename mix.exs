@@ -46,7 +46,7 @@ defmodule Web3MoveEx.MixProject do
       {:bcs, "~> 0.1.0"},
       {:tesla, "~> 1.4"},
       {:hackney, "~> 1.17"},
-      {:sui, git: "https://github.com/yangcancai/sui.git", branch: "main"},
+      {:sui, "~> 0.1.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:exbase58, "~> 1.0.2"},
       {:web3_aptos_ex, "~> 1.0.4"}
