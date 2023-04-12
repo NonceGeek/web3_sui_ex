@@ -50,7 +50,7 @@ defmodule Web3MoveEx.Sui.RPC do
     {:ok, %__MODULE__{client: client, endpoint: endpoint}}
   end
 
-  def sui_get_object(client, object_id, options \\ :default) do
+  def get_object(client, object_id, options \\ :default) do
     body = build_body(:get_obj, object_id, options)
     post(client, body)
   end

@@ -9,7 +9,7 @@
 > * hello_blockchain: [0xcd6e69ff3c22db037584fb1650f7ca75df721fb0143690fb33f2f3bd0c1fe5bd](https://explorer.aptoslabs.com/account/0xcd6e69ff3c22db037584fb1650f7ca75df721fb0143690fb33f2f3bd0c1fe5bd/modules)
 
 ```elixir
-Mix.install([:poison, :jason, {:web3_move_ex, "~> 0.5.0"}])
+Mix.install([:poison, :jason, {:web3_move_ex, "~> 0.6.0"}])
 ```
 
 <!-- livebook:{"output":true} -->
@@ -167,16 +167,16 @@ See the using example in:
 ## 0x02 Implementation
 
 * [x] Aptos
+  * [x] Generate Account 
   * [x] RPC Implementation
   * [x] Read Resource
-  * [x] Send Transaction
-* [x] Starcoin
-  * [x] Readonly Function
+  * [x] Encode & Send Transaction
+* [x] Sui
+  * [x] Generate Account 
+  * [x] Encode & Send Transaction
   * [x] Read Resource
-  * [x] Send Transaction
-  * [x] Deploy Contract
-  * [x] Chain Interactor
-* [ ] Sui
+  * [x] Read Object
+  
 
 ## 0x03 Installation
 
@@ -186,7 +186,7 @@ by adding `web3_move_ex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:web3_move_ex, "~> 0.5.0"}
+    {:web3_move_ex, "~> 0.6.0"}
   ]
 end
 ```
@@ -195,13 +195,17 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/web3_move_ex](https://hexdocs.pm/web3_move_ex).
 
-## 0x04 Aptos
+## 0x04 Sui
 
-**Namespace:** Web3MoveEx.Aptos
+
+
+## 0x05 Aptos
+
+**Namespace:** Web3AptosEx.Aptos
 
 <!-- livebook:{"break_markdown":true} -->
 
-### 4.1 Create a Connect
+### 5.1 Create a Connect
 
 ```elixir
 import Web3MoveEx.Aptos
@@ -231,7 +235,7 @@ client
 }
 ```
 
-### 4.2 Create Account
+### 5.2 Create Account
 
 Aptos using the Ed25519 Algorithm for the Account.
 
@@ -259,9 +263,9 @@ account
 nil
 ```
 
-### 4.3 Read Resource of Acct
+### 5.3 Read Resource of Acct
 
-#### 4.3.1 Read the resources of the Acct
+#### 5.3.1 Read the resources of the Acct
 
 ```elixir
 Aptos.RPC.get_resources(client, "0x3")
@@ -333,7 +337,7 @@ Aptos.RPC.get_resources(client, "0x3")
  ]}
 ```
 
-#### 4.3.2 Read resource by resource_type
+#### 5.3.2 Read resource by resource_type
 
 ```elixir
 Web3MoveEx.Aptos.RPC.get_resource(client, "0x3", "0x1::account::Account")
@@ -357,7 +361,7 @@ Web3MoveEx.Aptos.RPC.get_resource(client, "0x3", "0x1::account::Account")
  }}
 ```
 
-#### 4.3.2 Read the item in Table
+#### 5.3.2 Read the item in Table
 
 💡 You could get handle in  Explorer:
 
@@ -392,7 +396,7 @@ Web3MoveEx.Aptos.RPC.get_table_item(
  }}
 ```
 
-### 4.4 Send Tx
+### 5.4 Send Tx
 
 ```elixir
 # Call function
@@ -410,205 +414,11 @@ Aptos.submit_txn(client, account, payload)
   175, 118, 53, 133, 48, 43, 65, 212, 38, 216, 1>>
 ```
 
-## 0x05 Starcoin
-
-**Namespace:** Web3MoveEx.Starcoin
-
-### 5.1 Create a Connect
-
-```elixir
-alias Web3MoveEx.Starcoin
-# Create a Connect to local node
-client_local = Starcoin.Client.connect()
-IO.puts(inspect(client_local))
-# Create a Connect to Barnard node
-client_barnard = Starcoin.Client.connect("https://barnard-seed.starcoin.org")
-IO.puts(inspect(client_barnard))
-
-client_mainnet = Starcoin.Client.connect("https://main-seed.starcoin.org")
-IO.puts(inspect(client_mainnet))
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-%Web3MoveEx.Starcoin.Client{chain_id: 254, endpoint: "http://localhost:9851"}
-%Web3MoveEx.Starcoin.Client{chain_id: 251, endpoint: "https://barnard-seed.starcoin.org"}
-%Web3MoveEx.Starcoin.Client{chain_id: 1, endpoint: "https://main-seed.starcoin.org"}
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-:ok
-```
-
-### 5.2 Create Account
-
-Starcoin using the **Ed25519 Algorithm** for the Account.
-
-```elixir
-{:ok, %{address_hex: address_hex}} =
-  payload =
-  Starcoin.Account.from_private_key(
-    0xA95ED7F73DE144BC8F64C0266BE38ED6AF0903762E2503D3C7C71CDA69EEA99A
-  )
-```
-
-<!-- livebook:{"output":true} -->
-
-```
-{:ok,
- %Web3MoveEx.Starcoin.Account{
-   address: <<17, 104, 232, 143, 252, 92, 236, 83, 179, 152, 180, 45, 97, 136, 91, 187>>,
-   address_hex: "0x1168e88ffc5cec53b398b42d61885bbb",
-   public_key: <<182, 132, 185, 94, 183, 12, 78, 210, 69, 176, 65, 101, 54, 159, 176, 213, 17, 104,
-     232, 143, 252, 92, 236, 83, 179, 152, 180, 45, 97, 136, 91, 187>>,
-   sequence_number: 0,
-   signing_key: %Web3MoveEx.Starcoin.SigningKey{
-     private_key: <<169, 94, 215, 247, 61, 225, 68, 188, 143, 100, 192, 38, 107, 227, 142, 214, 175,
-       9, 3, 118, 46, 37, 3, 211, 199, 199, 28, 218, 105, 238, 169, 154>>,
-     public_key: <<216, 214, 6, 64, 220, 252, 62, 18, 115, 98, 182, 218, 97, 153, 40, 125, 44, 236,
-       69, 88, 194, 34, 54, 251, 3, 120, 233, 36, 185, 157, 10, 42>>
-   }
- }}
-```
-
-### 5.3 Deploy Contract
-
-#### 5.3.1 Starcoin Console Ways
-
-Using the `my_counter` as Example:
-
-```
-$ git clone git@github.com:WeLightProject/Web3-dApp-Camp.git
-$ cd Web3-dApp-Camp/move-dapp/my-counter
-```
-
-Modify the address in `move.toml` to the address that you would like to deploy your contract.
-
-```rust
-[package]
-name = "my_counter"
-version = "0.0.1"
-
-[addresses]
-StarcoinFramework = "0x1"
-MyAddr = [YOUR ADDR] 
-
-[dependencies]
-StarcoinFramework = {git = "https://github.com/starcoinorg/starcoin-framework.git", rev="9ea61ce1429070c945002b26ef5f5ea6b72884e4"}
-```
-
-Compile:
-
-```bash
-$ mpm release
-```
-
-> 💡 [How to install mpm?](https://starcoinorg.github.io/starcoin-cookbook/docs/move/prepare-move-env)
-
-Open Console, the command will start a dev node local yet:
-
-```bash
-$ starcoin -d /Users/liaohua/starcoin_data -n dev console
-```
-
-Get-coin on local network:
-
-```
-starcoin% dev get-coin -v 100STC
-```
-
-Deploy Contract with starcoin:
-
-```
-starcoin% dev deploy [path to blob] -s [addr] -b
-```
-
-Deploy Contract with Elixir SDK:
-
-💡Remember to get some faucet first:
-
-```
-starcoin% account transfer -r 0x52bfdf8638e3658bb9f00cc04ca98bdd -v 100000000000
-```
-
-Operate in `iex`:
-
-```elixir
-client = Web3MoveEx.Starcoin.Client.connect()
-
-payload = Web3MoveEx.Starcoin.Transaction.script_function("0x52bfdf8638e3658bb9f00cc04ca98bdd", "MyCounter", "init_counter", [], [])
-
-module_path = "./test/starcoin/transaction/fixtures/MyCounter.mv""
-options = [private_key: "0xdebb41434877520254a4551a80b78dcfdce9bc3d576b13b66c3b343d515c0a8b"]
-
-Web3MoveEx.Starcoin.deploy_contract(client, payload, module_path, options)
-```
-
-**Additional Tips:**
-
-* Get Faucet on barnard:
-  https://faucet.starcoin.org/barnard
-
-* Connect Testnet by Console:
-
-```bash
-$ starcoin --connect ws://barnard.seed.starcoin.org:9870 --local-account-dir ~/.starcoin/barnard/account_vaults console
-```
-
-### 5.4 Read Resource
-
-```elixir
-Web3MoveEx.Starcoin.Caller.Contract.get_resource(
-  client,
-  "<you_addresss>",
-  "<deploy_address>::MyCounter::Counter"
-)
-
-{:ok,
- %{
-   id: 1,
-   jsonclient: "2.0",
-   result: %{
-     abilities: 12,
-     type_: "<deploy_address>::MyCounter::Counter",
-     value: [["value", %{U64: "0"}]]
-   }
- }}
-```
-
-### 5.5 Run ReadOnly Function in MOVE
-
-```elixir
-/ / TODO
-```
-
-### 5.6 Run Writed Function in MOVE
-
-```elixir
-client = Web3MoveEx.Starcoin.Client.connect()
-
-payload =
-  Web3MoveEx.Starcoin.Transaction.Function.call(
-    client,
-    "<deploy_address>::MyCounter::incr_counter",
-    [],
-    []
-  )
-
-options = [private_key: "<you_private_key>"]
-
-Web3MoveEx.Starcoin.submit_txn(client, payload, options)
-# when get resource return 1
-```
-
-## 0x06 Contributing
+## 0x05 Contributing
 
 Bug report or pull request are welcome.
 
-## 0x07 Make a pull request
+## 0x06 Make a pull request
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -618,6 +428,6 @@ Bug report or pull request are welcome.
 
 Please write unit test with your code if necessary.
 
-## 0x08 License
+## 0x07 License
 
 web3_move_ex is available as open source under the terms of the [MIT License](./LICENSE.md).

@@ -13,7 +13,7 @@ defmodule Web3MoveEx.Sui do
     Web3MoveEx.Sui.Account.new(Atom.to_string(key_schema))
   end
 
-  def get_balance(client \\ nil, sui_address) do
+  def get_balance(client, sui_address) do
     res = client |> RPC.call("suix_getAllBalances", [sui_address])
     case res do
       {:ok, []} ->
@@ -33,9 +33,15 @@ defmodule Web3MoveEx.Sui do
     end
   end
 
-  def get_all_coins(client \\ nil, sui_address) do
+  def get_all_coins(client, sui_address) do
     client |> RPC.call("suix_getAllCoins", [sui_address])
   end
+
+  def get_objects_by_owner(client, sui_address) do
+    client |> RPC.call("suix_getOwnedObjects", [sui_address])
+  end
+
+  defdelegate get_object(client, object_id, options \\ :default), to:  RPC
 
   def move_call(
         client,
@@ -152,7 +158,7 @@ defmodule Web3MoveEx.Sui do
 
   def object_ref(client, object_id) do
     {:ok, %{data: %{objectId: object_id, version: ver, digest: digest}}} =
-      client |> RPC.sui_get_object(object_id)
+      client |> RPC.get_object(object_id)
 
     {:ok, obj_bin} = :sui_nif.decode_pub(object_id)
     {obj_bin, ver, Base58.decode(digest)}
