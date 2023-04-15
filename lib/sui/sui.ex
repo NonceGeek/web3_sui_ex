@@ -82,7 +82,7 @@ defmodule Web3MoveEx.Sui do
         type_arguments,
         arguments,
         gas_budget,
-        gas \\ nil,
+        gas \\ nil
       ) do
     unsafe_moveCall(
       client,
