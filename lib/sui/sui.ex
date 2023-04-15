@@ -21,6 +21,7 @@ defmodule Web3MoveEx.Sui do
 
   def get_balance(client, sui_address) do
     res = client |> RPC.call("suix_getAllBalances", [sui_address])
+
     case res do
       {:ok, []} ->
         {:ok,
@@ -47,7 +48,30 @@ defmodule Web3MoveEx.Sui do
     client |> RPC.call("suix_getOwnedObjects", [sui_address])
   end
 
-  defdelegate get_object(client, object_id, options \\ :default), to:  RPC
+  defdelegate get_object(client, object_id, options \\ :default), to: RPC
+
+  def sui_getMoveFunctionArgTypes(client, package, module, function) do
+    client |> RPC.call("sui_getMoveFunctionArgTypes", [package, module, function])
+  end
+
+  def sui_getNormalizedMoveFunction(client, package, module, function) do
+    client |> RPC.call("sui_getNormalizedMoveFunction", [package, module, function])
+  end
+
+  def sui_getNormalizedMoveModule(client, package, module) do
+    client |> RPC.call("sui_getNormalizedMoveModule", [package, module])
+  end
+
+  def sui_getNormalizedMoveModulesByPackage(client, package) do
+    client |> RPC.call("sui_getNormalizedMoveModulesByPackage", [package])
+  end
+
+  def sui_getNormalizedMoveStruct(client, package, module, struct) do
+    client |> RPC.call("sui_getNormalizedMoveStruct", [package, module, struct])
+  end
+  def suix_getReferenceGasPrice(client) do
+    client |> RPC.call("suix_getReferenceGasPrice", [])
+  end
 
   def move_call(
         client,
@@ -73,6 +97,16 @@ defmodule Web3MoveEx.Sui do
     )
   end
 
+  def unsafe_mergeCoins(client, account, primary_coin, coin_to_merge, gas \\ nil, gas_budget) do
+    client
+    |> RPC.unsafe_call(account, "unsafe_mergeCoins", [
+      primary_coin,
+      coin_to_merge,
+      gas,
+      gas_budget
+    ])
+  end
+
   def unsafe_moveCall(
         client,
         %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
@@ -84,28 +118,92 @@ defmodule Web3MoveEx.Sui do
         gas_budget,
         gas
       ) do
-    {:ok, %{txBytes: tx_bytes}} =
-      client
-      |> RPC.unsafe_moveCall(
-        sui_address_hex,
-        package_object_id,
-        module,
-        function,
-        type_arguments,
-        arguments,
-        gas,
-        gas_budget
-      )
-
-    flag = Bcs.encode(Web3MoveEx.Sui.Bcs.IntentMessage.Intent.default())
-    {:ok, signatures} = RPC.sign(account, flag <> :base64.decode(tx_bytes))
-
     client
-    |> RPC.sui_executeTransactionBlock(
-      tx_bytes,
-      signatures,
-      Web3MoveEx.Sui.RPC.ExecuteTransactionRequestType.wait_for_local_execution()
-    )
+    |> RPC.unsafe_call(account, "unsafe_moveCall", [
+      package_object_id,
+      module,
+      function,
+      type_arguments,
+      arguments,
+      gas,
+      gas_budget
+    ])
+  end
+
+  def unsafe_pay(client, account, input_coins, recipients, amounts, gas \\ nil, gas_budget) do
+    client
+    |> RPC.unsafe_call(account, "unsafe_pay", [input_coins, recipients, amounts, gas, gas_budget])
+  end
+
+  def unsafe_payAllSui(client, account, input_coins, recipients, gas_budget) do
+    client |> RPC.unsafe_call(account, "unsafe_payAllSui", [input_coins, recipients, gas_budget])
+  end
+
+  def unsafe_paySui(client, account, input_coins, recipients, amounts, gas_budget) do
+    client
+    |> RPC.unsafe_call(account, "unsafe_paySui", [input_coins, recipients, amounts, gas_budget])
+  end
+
+  def unsafe_push(client, account, compiled_modules, dependencies, gas \\ nil, gas_budget) do
+    client
+    |> RPC.unsafe_call(account, "unsafe_push", [compiled_modules, dependencies, gas, gas_budget])
+  end
+
+  def unsafe_requestAddStake(client, account, coins, amount, validator, gas \\ nil, gas_budget) do
+    client
+    |> RPC.unsafe_call(account, "unsafe_requestAddStake", [
+      coins,
+      amount,
+      validator,
+      gas,
+      gas_budget
+    ])
+  end
+
+  def unsafe_requestWithdrawStake(client, account, staked_sui, gas \\ nil, gas_budget) do
+    client
+    |> RPC.unsafe_call(account, "unsafe_requestWithdrawStake", [staked_sui, gas, gas_budget])
+  end
+
+  def unsafe_splitCoin(client, account, coin_object_id, split_amounts, gas \\ nil, gas_budget) do
+    client
+    |> RPC.unsafe_call(account, "unsafe_splitCoin", [
+      coin_object_id,
+      split_amounts,
+      gas,
+      gas_budget
+    ])
+  end
+
+  def unsafe_splitCoinEqual(client, account, coin_object_id, split_count, gas \\ nil, gas_budget) do
+    client
+    |> RPC.unsafe_call(account, "unsafe_splitCoinEqual", [
+      coin_object_id,
+      split_count,
+      gas,
+      gas_budget
+    ])
+  end
+
+  def unsafe_transfer(
+        client,
+        account,
+        object_id,
+        gas_budget,
+        recipient,
+        gas \\ nil
+      ) do
+    client |> RPC.unsafe_call(account, "unsafe_transfer", [object_id, gas, gas_budget, recipient])
+  end
+
+  def unsafe_transferSui(client, account, sui_object_id, gas_budget, recipient, amount) do
+    client
+    |> RPC.unsafe_call(account, "unsafe_transferSui", [
+      sui_object_id,
+      gas_budget,
+      recipient,
+      amount
+    ])
   end
 
   def unsafe_moveCall(
@@ -161,28 +259,6 @@ defmodule Web3MoveEx.Sui do
   #   intent_msg = %IntentMessage{intent: Intent.default(), data: {:v1, transaction_data}}
   #   client |> RPC.sui_executeTransactionBlock(account, intent_msg)
   # end
-
-  def unsafe_transfer(
-        client,
-        %Web3MoveEx.Sui.Account{sui_address_hex: sui_address} = account,
-        object_id,
-        gas_budget,
-        recipient,
-        gas \\ nil
-      ) do
-    {:ok, %{txBytes: tx_bytes}} =
-      client |> RPC.unsafe_transferObject(sui_address, object_id, gas, gas_budget, recipient)
-
-    flag = Bcs.encode(Web3MoveEx.Sui.Bcs.IntentMessage.Intent.default())
-    {:ok, signatures} = RPC.sign(account, flag <> :base64.decode(tx_bytes))
-
-    client
-    |> RPC.sui_executeTransactionBlock(
-      tx_bytes,
-      signatures,
-      Web3MoveEx.Sui.RPC.ExecuteTransactionRequestType.wait_for_local_execution()
-    )
-  end
 
   def select_gas(client, account, gas \\ nil)
 
