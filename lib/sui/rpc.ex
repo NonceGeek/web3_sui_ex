@@ -12,6 +12,10 @@ defmodule Web3MoveEx.Sui.RPC do
   @endpoint %{
     devnet: "https://fullnode.devnet.sui.io:443"
   }
+
+  @faucet_endpoint %{
+    devnet: "https://faucet.devnet.sui.io/gas"
+  }
   defmodule ExecuteTransactionRequestType do
     def wait_for_local_execution, do: "WaitForLocalExecution"
     def wait_for_effects_cert, do: "WaitForEffectsCert"
@@ -25,25 +29,32 @@ defmodule Web3MoveEx.Sui.RPC do
     connect(@endpoint.devnet)
   end
 
+  def connect(:faucet) do
+    client =
+      Tesla.client([
+        {Tesla.Middleware.BaseUrl, @faucet_endpoint.devnet},
+        # {Tesla.Middleware.Headers, [{"content-type", "application/json"}]},
+        {Tesla.Middleware.JSON, engine_opts: [keys: :atoms]}
+      ])
+
+    {:ok, %__MODULE__{client: client, endpoint: @faucet_endpoint.devnet}}
+  end
+
+  def get_faucet(client, address_hex) do
+    body = Jason.encode!(%{
+      "FixedAmountRequest" => %{
+          "recipient"=> address_hex
+      }
+  })
+    post(client, body)
+  end
+
   def connect(endpoint) do
     client =
       Tesla.client([
         # TODO: convert input/output type
         {Tesla.Middleware.BaseUrl, endpoint},
         {Tesla.Middleware.Headers, [{"content-type", "application/json"}]},
-        {Tesla.Middleware.JSON, engine_opts: [keys: :atoms]}
-      ])
-
-    {:ok, %__MODULE__{client: client, endpoint: endpoint}}
-  end
-
-  def connect(:faucet, network_type) do
-    endpoint = Map.get(@faucet, network_type)
-
-    client =
-      Tesla.client([
-        {Tesla.Middleware.BaseUrl, endpoint},
-        # {Tesla.Middleware.Headers, [{"content-type", "application/json"}]},
         {Tesla.Middleware.JSON, engine_opts: [keys: :atoms]}
       ])
 

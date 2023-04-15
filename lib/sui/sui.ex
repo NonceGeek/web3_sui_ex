@@ -13,6 +13,12 @@ defmodule Web3MoveEx.Sui do
     Web3MoveEx.Sui.Account.new(Atom.to_string(key_schema))
   end
 
+  def get_faucet(address_hex) do
+    {:ok, client} = RPC.connect(:faucet)
+    # {:ok, _} = RPC.get_faucet(client, account)
+    # account
+  end
+
   def get_balance(client, sui_address) do
     res = client |> RPC.call("suix_getAllBalances", [sui_address])
     case res do
@@ -102,34 +108,33 @@ defmodule Web3MoveEx.Sui do
     )
   end
 
-  def transfer(
-        client,
-        %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
-        object_id,
-        gas,
-        gas_budget,
-        recipient
-      ) do
-    gas = client |> select_gas(account, gas)
-    gas_price = client |> RPC.suix_getReferenceGasPrice()
+  # def transfer(
+  #       client,
+  #       %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
+  #       object_id,
+  #       gas,
+  #       gas_budget,
+  #       recipient
+  #     ) do
+  #   gas = client |> select_gas(account, gas)
+  #   gas_price = client |> RPC.suix_getReferenceGasPrice()
 
-    kind =
-      Web3MoveEx.Sui.Bcs.TransactionKind.transfer_object(recipient, object_ref(client, object_id))
+  #   kind =
+  #     Web3MoveEx.Sui.Bcs.TransactionKind.transfer_object(recipient, object_ref(client, object_id))
+  #   transaction_data =
+  #     Web3MoveEx.Sui.Bcs.TransactionData.new(kind, sui_address_hex, gas, gas_budget, gas_price)
 
-    transaction_data =
-      Web3MoveEx.Sui.Bcs.TransactionData.new(kind, sui_address_hex, gas, gas_budget, gas_price)
-
-    intent_msg = %IntentMessage{intent: Intent.default(), data: {:v1, transaction_data}}
-    client |> RPC.sui_executeTransactionBlock(account, intent_msg)
-  end
+  #   intent_msg = %IntentMessage{intent: Intent.default(), data: {:v1, transaction_data}}
+  #   client |> RPC.sui_executeTransactionBlock(account, intent_msg)
+  # end
 
   def unsafe_transfer(
         client,
         %Web3MoveEx.Sui.Account{sui_address_hex: sui_address} = account,
         object_id,
-        gas \\ nil,
         gas_budget,
         recipient
+        gas \\ nil,
       ) do
     {:ok, %{txBytes: tx_bytes}} =
       client |> RPC.unsafe_transferObject(sui_address, object_id, gas, gas_budget, recipient)
