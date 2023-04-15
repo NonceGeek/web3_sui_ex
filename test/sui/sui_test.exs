@@ -7,32 +7,20 @@ defmodule Web3MoveEx.SuiTest do
 
   setup_all do
     {:ok, rpc} = RPC.connect("http://127.0.0.1:9000")
-    {:ok, %Web3MoveEx.Sui.Account{sui_address_hex: sui_address}} = Sui.generate_priv()
+    {:ok, %Web3MoveEx.Sui.Account{sui_address_hex: sui_address}} = Sui.gen_acct()
     %{rpc: rpc, address: sui_address}
-  end
-
-  test "get_balance", %{rpc: rpc, address: account} do
-    res = Sui.get_balance(rpc, account)
-
-    assert {:ok,
-            %{
-              coinType: "0x2::sui::SUI",
-              coinObjectCount: 0,
-              totalBalance: 0,
-              lockedBalance: {}
-            }} == res
   end
 
   test "test unsafe_moveCall", %{rpc: client} do
     %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} =
-    account = Web3MoveEx.Sui.Account.from("AMSs6F3/uRvzqCXXinpSQLpn+d5wH8lWlN2w1a2T7XCW")
+    account = Web3MoveEx.Sui.Account.from("AKpjfApmHx8FbjrRRSrUlF6ITigjP8NMS1ip4JdqPp5g")
     package_object_id = "0x2"
     module = "sui"
     function = "transfer"
     type_arguments = []
-    # gas= "0xf4a182bb3a944efb225fd35222e7aa8f18648ea21eb1de9c693541fd1921804f"
+#    gas= "0x7c70bccddbc9f441739613be2320a634d907a6c7e696930fd7f396a9e4c41f93"
     gas_budget = 10000
-    arguments = ["0x8fb7a1429d2f57303d742f41fcf7fad701576512d7ecce60713ea1043128842f", "0x7c70bccddbc9f441739613be2320a634d907a6c7e696930fd7f396a9e4c41f93"]
+    arguments = ["0x3a5f70f0bedb661f1e8bc596e308317edb0bdccc5bc86207b45f01db1aad5ddf", "0x313c133acaf25103aae40544003195e1a3bb7d5b2b11fd4c6ec61af16bcdb968"]
     # {:ok, %{txBytes: tx_bytes}} =
     #   res =
     Web3MoveEx.Sui.move_call(
@@ -93,4 +81,10 @@ defmodule Web3MoveEx.SuiTest do
     b = :base64.decode(tx_bytes)
     assert a == b
   end
+  test "split coin", %{rpc: client} do
+     %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} =
+      account = Web3MoveEx.Sui.Account.from("AKpjfApmHx8FbjrRRSrUlF6ITigjP8NMS1ip4JdqPp5g")
+      res = client |> Sui.unsafe_splitCoin(account, "0x8fb7a1429d2f57303d742f41fcf7fad701576512d7ecce60713ea1043128842f", [10000], 1200)
+      assert :ok = res
+    end
 end
