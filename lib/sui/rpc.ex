@@ -4,7 +4,6 @@ defmodule Web3MoveEx.Sui.RPC do
   """
   alias Web3MoveEx.Sui.Bcs.IntentMessage
 
-  alias Utils.ExHttp
   require Logger
 
   defstruct [:endpoint, :client]
@@ -40,15 +39,6 @@ defmodule Web3MoveEx.Sui.RPC do
     {:ok, %__MODULE__{client: client, endpoint: @faucet_endpoint.devnet}}
   end
 
-  def get_faucet(client, address_hex) do
-    body = Jason.encode!(%{
-      "FixedAmountRequest" => %{
-          "recipient"=> address_hex
-      }
-  })
-    post(client, body)
-  end
-
   def connect(endpoint) do
     client =
       Tesla.client([
@@ -59,6 +49,17 @@ defmodule Web3MoveEx.Sui.RPC do
       ])
 
     {:ok, %__MODULE__{client: client, endpoint: endpoint}}
+  end
+
+  def get_faucet(client, address_hex) do
+    body =
+      Jason.encode!(%{
+        "FixedAmountRequest" => %{
+          "recipient" => address_hex
+        }
+      })
+
+    post(client, body)
   end
 
   def get_object(client, object_id, options \\ :default) do
@@ -129,6 +130,31 @@ defmodule Web3MoveEx.Sui.RPC do
     call(client, "unsafe_transferObject", [signer, object_id, gas, gas_budget, recipient])
   end
 
+  def unsafe_call(
+        client,
+        %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
+        method,
+        params
+      ) do
+    {:ok, %{txBytes: tx_bytes}} = client |> call(method, [sui_address_hex | params])
+    flag = Bcs.encode(Web3MoveEx.Sui.Bcs.IntentMessage.Intent.default())
+    {:ok, signatures} = sign(account, flag <> :base64.decode(tx_bytes))
+
+    case client
+    |> sui_executeTransactionBlock(
+      tx_bytes,
+      signatures,
+      Web3MoveEx.Sui.RPC.ExecuteTransactionRequestType.wait_for_local_execution()
+    ) do
+      {:ok, %{effects: %{status: %{status: "success"}}}} = res->
+      res
+      {:ok, %{effects: %{status: %{status: "failure", error: error}}}}->
+        {:error, error}
+      other ->
+      other
+      end
+  end
+
   def transaction_option(:default) do
     %{
       "showInput" => true,
@@ -183,7 +209,7 @@ defmodule Web3MoveEx.Sui.RPC do
   end
 
   @spec sign(Web3MoveEx.Sui.Account, binary()) :: {:ok, list()} | :error
-  def sign(%Web3MoveEx.Sui.Account{priv_key_base64: priv_key_base64} = account, tx_bytes) do
+  def sign(%Web3MoveEx.Sui.Account{priv_key_base64: priv_key_base64}, tx_bytes) do
     :sui_nif.sign(tx_bytes, priv_key_base64)
   end
 
