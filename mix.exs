@@ -7,7 +7,7 @@ defmodule Web3MoveEx.MixProject do
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      version: "0.6.1",
+      version: "0.6.2",
       description: "cool sdk for Chains using MOVE, such as: aptos, sui, rooch",
       package: package()
     ]
@@ -42,7 +42,7 @@ defmodule Web3MoveEx.MixProject do
       {:earmark, ">= 0.0.0", only: :dev},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:binary, "~> 0.0.5"},
-      {:nimble_parsec, "~> 1.2"},
+    {:nimble_parsec, "~> 1.2"},
       {:bcs, "~> 0.1.0"},
       {:tesla, "~> 1.4"},
       {:hackney, "~> 1.17"},
@@ -50,6 +50,7 @@ defmodule Web3MoveEx.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:exbase58, "~> 1.0.2"},
       {:web3_aptos_ex, "~> 1.0.4"}
+
     ]
   end
 end

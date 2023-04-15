@@ -57,8 +57,8 @@ defmodule Web3MoveEx.Sui do
         function,
         type_arguments,
         arguments,
+        gas_budget,
         gas \\ nil,
-        gas_budget
       ) do
     unsafe_moveCall(
       client,
@@ -68,8 +68,8 @@ defmodule Web3MoveEx.Sui do
       function,
       type_arguments,
       arguments,
-      gas,
-      gas_budget
+      gas_budget,
+      gas
     )
   end
 
@@ -81,8 +81,8 @@ defmodule Web3MoveEx.Sui do
         function,
         type_arguments,
         arguments,
-        gas,
-        gas_budget
+        gas_budget,
+        gas
       ) do
     {:ok, %{txBytes: tx_bytes}} =
       client
@@ -94,6 +94,40 @@ defmodule Web3MoveEx.Sui do
         type_arguments,
         arguments,
         gas,
+        gas_budget
+      )
+
+    flag = Bcs.encode(Web3MoveEx.Sui.Bcs.IntentMessage.Intent.default())
+    {:ok, signatures} = RPC.sign(account, flag <> :base64.decode(tx_bytes))
+
+    client
+    |> RPC.sui_executeTransactionBlock(
+      tx_bytes,
+      signatures,
+      Web3MoveEx.Sui.RPC.ExecuteTransactionRequestType.wait_for_local_execution()
+    )
+  end
+
+  def unsafe_moveCall(
+    client,
+    %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
+    package_object_id,
+    module,
+    function,
+    type_arguments,
+    arguments,
+    gas_budget
+  ) do
+    {:ok, %{txBytes: tx_bytes}} =
+      client
+      |> RPC.unsafe_moveCall(
+        sui_address_hex,
+        package_object_id,
+        module,
+        function,
+        type_arguments,
+        arguments,
+        nil,
         gas_budget
       )
 
