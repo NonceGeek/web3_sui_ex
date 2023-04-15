@@ -133,8 +133,8 @@ defmodule Web3MoveEx.Sui do
         %Web3MoveEx.Sui.Account{sui_address_hex: sui_address} = account,
         object_id,
         gas_budget,
-        recipient
-        gas \\ nil,
+        recipient,
+        gas \\ nil
       ) do
     {:ok, %{txBytes: tx_bytes}} =
       client |> RPC.unsafe_transferObject(sui_address, object_id, gas, gas_budget, recipient)
