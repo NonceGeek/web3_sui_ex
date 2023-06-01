@@ -7,8 +7,8 @@ defmodule Web3SuiEx.MixProject do
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      version: "0.6.2",
-      description: "cool sdk for Chains using MOVE, such as: aptos, sui, rooch",
+      version: "0.1.0",
+      description: "cool sdk for Sui Blockchain.",
       package: package()
     ]
   end

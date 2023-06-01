@@ -1,2 +1,2 @@
-import Web3AptosEx.Aptos
-alias Web3AptosEx.Aptos
+import Web3SuiEx.Sui
+alias Web3SuiEx.Sui
