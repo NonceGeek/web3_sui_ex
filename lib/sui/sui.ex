@@ -50,26 +50,26 @@ defmodule Web3SuiEx.Sui do
 
   defdelegate get_object(client, object_id, options \\ :default), to: RPC
 
-  def sui_getMoveFunctionArgTypes(client, package, module, function) do
+  def sui_get_move_function_arg_types(client, package, module, function) do
     client |> RPC.call("sui_getMoveFunctionArgTypes", [package, module, function])
   end
 
-  def sui_getNormalizedMoveFunction(client, package, module, function) do
+  def sui_get_normalized_move_function(client, package, module, function) do
     client |> RPC.call("sui_getNormalizedMoveFunction", [package, module, function])
   end
 
-  def sui_getNormalizedMoveModule(client, package, module) do
+  def sui_get_normalized_move_module(client, package, module) do
     client |> RPC.call("sui_getNormalizedMoveModule", [package, module])
   end
 
-  def sui_getNormalizedMoveModulesByPackage(client, package) do
+  def sui_get_normalized_move_modules_by_package(client, package) do
     client |> RPC.call("sui_getNormalizedMoveModulesByPackage", [package])
   end
 
-  def sui_getNormalizedMoveStruct(client, package, module, struct) do
+  def sui_get_normalized_move_struct(client, package, module, struct) do
     client |> RPC.call("sui_getNormalizedMoveStruct", [package, module, struct])
   end
-  def suix_getReferenceGasPrice(client) do
+  def sui_get_reference_gas_price(client) do
     client |> RPC.call("suix_getReferenceGasPrice", [])
   end
 
