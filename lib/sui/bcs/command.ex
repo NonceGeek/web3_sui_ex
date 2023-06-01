@@ -1,9 +1,9 @@
-defmodule Web3MoveEx.Sui.Bcs.Command do
+defmodule Web3SuiEx.Sui.Bcs.Command do
   @moduledoc false
-  alias Web3MoveEx.Sui.Bcs.ProgrammableMoveCall
-  alias Web3MoveEx.Sui.Bcs.Argument
-  alias Web3MoveEx.Sui.Bcs.TypeTag
-  import Web3MoveEx.Sui.Bcs.Builder
+  alias Web3SuiEx.Sui.Bcs.ProgrammableMoveCall
+  alias Web3SuiEx.Sui.Bcs.Argument
+  alias Web3SuiEx.Sui.Bcs.TypeTag
+  import Web3SuiEx.Sui.Bcs.Builder
 
   use Bcs.TaggedEnum,
     movecall: ProgrammableMoveCall,

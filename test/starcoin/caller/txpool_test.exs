@@ -1,22 +1,22 @@
-defmodule Web3MoveEx.Starcoin.Caller.TxpoolTest do
+defmodule Web3SuiEx.Starcoin.Caller.TxpoolTest do
   @moduledoc false
 
   use ExUnit.Case, async: true
 
   import Mox
 
-  alias Web3MoveEx.Starcoin.Caller.Txpool
+  alias Web3SuiEx.Starcoin.Caller.Txpool
 
   setup :verify_on_exit!
 
   setup_all do
-    endpoint = Web3MoveEx.Constant.endpoint(:local)
+    endpoint = Web3SuiEx.Constant.endpoint(:local)
     %{endpoint: endpoint}
   end
 
   describe "submit_hex_transaction" do
     test "Should be right when %{singed_data} is right", %{endpoint: endpoint} do
-      Web3MoveEx.HTTP.Mox
+      Web3SuiEx.HTTP.Mox
       |> expect(:json_rpc, fn method, id ->
         %{method: method, jsonrpc: "2.0", id: id}
       end)
@@ -35,7 +35,7 @@ defmodule Web3MoveEx.Starcoin.Caller.TxpoolTest do
     end
 
     test "Return error when %{signed_data} is wrong", %{endpoint: endpoint} do
-      Web3MoveEx.HTTP.Mox
+      Web3SuiEx.HTTP.Mox
       |> expect(:json_rpc, fn method, id ->
         %{method: method, jsonrpc: "2.0", id: id}
       end)

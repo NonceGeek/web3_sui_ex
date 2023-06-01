@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Starcoin.Helpers do
+defmodule Web3SuiEx.Starcoin.Helpers do
   @moduledoc """
   Common helpers.
   """

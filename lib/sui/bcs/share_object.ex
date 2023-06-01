@@ -1,5 +1,5 @@
-defmodule Web3MoveEx.Sui.Bcs.ShareObject do
-  alias Web3MoveEx.Sui.Bcs.Builder
+defmodule Web3SuiEx.Sui.Bcs.ShareObject do
+  alias Web3SuiEx.Sui.Bcs.Builder
 
   @derive {Bcs.Struct,
            [

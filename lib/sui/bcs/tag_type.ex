@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Sui.Bcs.TypeTag do
+defmodule Web3SuiEx.Sui.Bcs.TypeTag do
   @moduledoc false
   use Bcs.TaggedEnum, [
     :bool,
@@ -17,10 +17,10 @@ defmodule Web3MoveEx.Sui.Bcs.TypeTag do
   defmodule StructTag do
     @derive {Bcs.Struct,
              [
-               address: Web3MoveEx.Sui.Bcs.Builder.sui_address(),
+               address: Web3SuiEx.Sui.Bcs.Builder.sui_address(),
                module: :string,
                name: :string,
-               type_params: [Web3MoveEx.Sui.Bcs.TypeTag]
+               type_params: [Web3SuiEx.Sui.Bcs.TypeTag]
              ]}
 
     defstruct [

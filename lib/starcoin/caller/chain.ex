@@ -1,12 +1,12 @@
-defmodule Web3MoveEx.Starcoin.Caller.Chain do
+defmodule Web3SuiEx.Starcoin.Caller.Chain do
   @moduledoc """
   api about chain
 
   TODO: impl others in https://www.postman.com/starcoinorg/workspace/starcoin-blockchain-api
   """
 
-  alias Web3MoveEx.HTTP
-  alias Web3MoveEx.Starcoin.Caller
+  alias Web3SuiEx.HTTP
+  alias Web3SuiEx.Starcoin.Caller
 
   @class "chain"
 
@@ -42,7 +42,7 @@ defmodule Web3MoveEx.Starcoin.Caller.Chain do
 
   ## Example
 
-    iex> Web3MoveEx.Starcoin.Caller.Chain.get_transaction_info("http://localhost:9851", "0xa23138f12b9f8221227dfebda5001bef176f9fcc9ce0c3eab2928d0a342bc6f1")
+    iex> Web3SuiEx.Starcoin.Caller.Chain.get_transaction_info("http://localhost:9851", "0xa23138f12b9f8221227dfebda5001bef176f9fcc9ce0c3eab2928d0a342bc6f1")
     {:ok, %{id: 1, jsonrpc: "2.0", result: %{}}}
 
   """
@@ -60,7 +60,7 @@ defmodule Web3MoveEx.Starcoin.Caller.Chain do
 
   ## Example
 
-    iex> Web3MoveEx.Starcoin.Caller.Chain.get_transaction("http://localhost:9851", "0xa23138f12b9f8221227dfebda5001bef176f9fcc9ce0c3eab2928d0a342bc6f1")
+    iex> Web3SuiEx.Starcoin.Caller.Chain.get_transaction("http://localhost:9851", "0xa23138f12b9f8221227dfebda5001bef176f9fcc9ce0c3eab2928d0a342bc6f1")
     {:ok, %{id: 1, jsonrpc: "2.0", result: %{}}}
 
   """

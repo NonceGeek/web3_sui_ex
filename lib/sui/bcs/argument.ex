@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Sui.Bcs.Argument do
+defmodule Web3SuiEx.Sui.Bcs.Argument do
   @moduledoc false
   use Bcs.TaggedEnum, [
     :gas_coin,

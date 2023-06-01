@@ -1,6 +1,6 @@
-defmodule Web3MoveEx.Sui.Bcs.CallArg do
+defmodule Web3SuiEx.Sui.Bcs.CallArg do
   @moduledoc false
-  alias Web3MoveEx.Sui.Bcs.ObjectArg
+  alias Web3SuiEx.Sui.Bcs.ObjectArg
 
   use Bcs.TaggedEnum,
     pure: [:u8],

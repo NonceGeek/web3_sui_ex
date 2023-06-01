@@ -1,11 +1,11 @@
-defmodule Web3MoveEx.Starcoin.Transaction do
+defmodule Web3SuiEx.Starcoin.Transaction do
   @moduledoc false
 
-  import Web3MoveEx.Starcoin.Helpers
+  import Web3SuiEx.Starcoin.Helpers
 
-  alias Web3MoveEx.Starcoin.Parser
+  alias Web3SuiEx.Starcoin.Parser
 
-  alias Web3MoveEx.Starcoin.Transaction.{
+  alias Web3SuiEx.Starcoin.Transaction.{
     RawTransaction,
     TransactionPayload,
     TransactionAuthenticator

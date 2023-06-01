@@ -1,9 +1,9 @@
-defmodule Web3MoveEx.Starcoin.Transaction.RawTransaction do
+defmodule Web3SuiEx.Starcoin.Transaction.RawTransaction do
   @moduledoc """
   In order to sign transaction offline, we need to encode RawTransaction in bcs format.
   """
 
-  alias Web3MoveEx.Starcoin.Transaction.TransactionPayload
+  alias Web3SuiEx.Starcoin.Transaction.TransactionPayload
 
   @derive {Bcs.Struct,
            [

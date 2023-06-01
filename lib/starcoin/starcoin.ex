@@ -1,10 +1,10 @@
-defmodule Web3MoveEx.Starcoin do
+defmodule Web3SuiEx.Starcoin do
   @moduledoc false
 
-  alias Web3MoveEx.Starcoin.Account
-  alias Web3MoveEx.Starcoin.Caller.Txpool
-  alias Web3MoveEx.Starcoin.Transaction
-  alias Web3MoveEx.Starcoin.Transaction.TransactionPayload
+  alias Web3SuiEx.Starcoin.Account
+  alias Web3SuiEx.Starcoin.Caller.Txpool
+  alias Web3SuiEx.Starcoin.Transaction
+  alias Web3SuiEx.Starcoin.Transaction.TransactionPayload
 
   def submit_txn(client, payload, options \\ []) do
     private_key = Keyword.get(options, :private_key, fetch_priv_key())
@@ -45,5 +45,5 @@ defmodule Web3MoveEx.Starcoin do
     Txpool.submit_hex_transaction(client, signed_txn)
   end
 
-  def fetch_priv_key, do: Application.fetch_env(:web3_move_ex, :private_key)
+  def fetch_priv_key, do: Application.fetch_env(:web3_sui_ex, :private_key)
 end

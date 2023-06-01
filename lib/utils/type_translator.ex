@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.TypeTranslator do
+defmodule Web3SuiEx.TypeTranslator do
   @moduledoc false
 
   def hex_to_starcoin_byte(hex_str) do

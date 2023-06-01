@@ -1,9 +1,9 @@
-defmodule Web3MoveEx.Sui.Bcs.SuiAddress do
+defmodule Web3SuiEx.Sui.Bcs.SuiAddress do
   @moduledoc false
 
   @derive {Bcs.Struct,
            [
-             val: Web3MoveEx.Sui.Bcs.Builder.sui_address()
+             val: Web3SuiEx.Sui.Bcs.Builder.sui_address()
            ]}
   defstruct [
     :val

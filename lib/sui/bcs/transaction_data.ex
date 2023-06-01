@@ -1,7 +1,7 @@
-defmodule Web3MoveEx.Sui.Bcs.TransactionData do
-  alias Web3MoveEx.Sui.Bcs.GasData
-  alias Web3MoveEx.Sui.Bcs.TransactionKind
-  alias Web3MoveEx.Sui.Bcs.V1
+defmodule Web3SuiEx.Sui.Bcs.TransactionData do
+  alias Web3SuiEx.Sui.Bcs.GasData
+  alias Web3SuiEx.Sui.Bcs.TransactionKind
+  alias Web3SuiEx.Sui.Bcs.V1
 
   use Bcs.TaggedEnum,
     v1: V1

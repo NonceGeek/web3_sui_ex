@@ -1,11 +1,11 @@
-defmodule Web3MoveEx.Starcoin.Transaction.Function do
+defmodule Web3SuiEx.Starcoin.Transaction.Function do
   @moduledoc false
 
   require Logger
 
-  alias Web3MoveEx.Starcoin.Transaction
-  alias Web3MoveEx.Starcoin.Caller.Contract
-  alias Web3MoveEx.Starcoin.Encoder
+  alias Web3SuiEx.Starcoin.Transaction
+  alias Web3SuiEx.Starcoin.Caller.Contract
+  alias Web3SuiEx.Starcoin.Encoder
 
   defstruct address: nil,
             module: nil,
@@ -19,9 +19,9 @@ defmodule Web3MoveEx.Starcoin.Transaction.Function do
 
   ## Examples
 
-    iex> endpoint = Web3MoveEx.Starcoin.Client.connect()
-    iex> Web3MoveEx.Starcoin.Transaction.Function.call(endpoint, "0x1::TransferScripts::peer_to_peer_v2", ["0x1::STC::STC"], [0x1, 1])
-    %Web3MoveEx.Starcoin.Transaction.TransactionPayload.ScriptFunction{
+    iex> endpoint = Web3SuiEx.Starcoin.Client.connect()
+    iex> Web3SuiEx.Starcoin.Transaction.Function.call(endpoint, "0x1::TransferScripts::peer_to_peer_v2", ["0x1::STC::STC"], [0x1, 1])
+    %Web3SuiEx.Starcoin.Transaction.TransactionPayload.ScriptFunction{
       address: <<0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1>>,
       args: [
         <<0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1>>,
@@ -30,7 +30,7 @@ defmodule Web3MoveEx.Starcoin.Transaction.Function do
       function: "peer_to_peer_v2",
       module: "TransferScripts",
       type_args: [
-        struct: %Web3MoveEx.Starcoin.Transaction.TypeTag.StructTag{
+        struct: %Web3SuiEx.Starcoin.Transaction.TypeTag.StructTag{
           address: <<0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1>>,
           module: "STC",
           name: "STC",

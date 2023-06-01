@@ -1,10 +1,10 @@
-defmodule Web3MoveEx.Starcoin.Transaction.RawTransactionTest do
+defmodule Web3SuiEx.Starcoin.Transaction.RawTransactionTest do
   @moduledoc false
 
   use ExUnit.Case
 
-  alias Web3MoveEx.Starcoin.Account
-  alias Web3MoveEx.Starcoin.Transaction.{RawTransaction, TransactionPayload, TypeTag}
+  alias Web3SuiEx.Starcoin.Account
+  alias Web3SuiEx.Starcoin.Transaction.{RawTransaction, TransactionPayload, TypeTag}
 
   setup_all do
     {:ok, from_address} = Account.from_private_key(0x1)
@@ -14,7 +14,7 @@ defmodule Web3MoveEx.Starcoin.Transaction.RawTransactionTest do
   end
 
   test "signed data is correct", %{from_address: from_address, to_address: to_address} do
-    encode_args = Web3MoveEx.Starcoin.Encoder.encode([to_address.address, 1], [:address, :u128])
+    encode_args = Web3SuiEx.Starcoin.Encoder.encode([to_address.address, 1], [:address, :u128])
 
     payload = %TransactionPayload.ScriptFunction{
       address: <<0x1::128>>,
@@ -63,7 +63,7 @@ defmodule Web3MoveEx.Starcoin.Transaction.RawTransactionTest do
     fe\
     """
 
-    assert signed_msg == Web3MoveEx.Starcoin.Transaction.signing_message(raw_tx)
+    assert signed_msg == Web3SuiEx.Starcoin.Transaction.signing_message(raw_tx)
   end
 
   test "signed data with deploy contract", %{from_address: from_address} do
@@ -109,6 +109,6 @@ defmodule Web3MoveEx.Starcoin.Transaction.RawTransactionTest do
     fe\
     """
 
-    assert signed_msg == Web3MoveEx.Starcoin.Transaction.signing_message(raw_tx)
+    assert signed_msg == Web3SuiEx.Starcoin.Transaction.signing_message(raw_tx)
   end
 end

@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Starcoin.Caller do
+defmodule Web3SuiEx.Starcoin.Caller do
   @moduledoc false
 
   def build_method(class, method), do: "#{class}.#{method}"

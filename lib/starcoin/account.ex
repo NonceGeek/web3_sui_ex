@@ -1,10 +1,10 @@
-defmodule Web3MoveEx.Starcoin.Account do
+defmodule Web3SuiEx.Starcoin.Account do
   @moduledoc false
 
-  import Web3MoveEx.Starcoin.Helpers
+  import Web3SuiEx.Starcoin.Helpers
 
-  alias Web3MoveEx.Starcoin.Caller.Contract
-  alias Web3MoveEx.Starcoin.SigningKey
+  alias Web3SuiEx.Starcoin.Caller.Contract
+  alias Web3SuiEx.Starcoin.SigningKey
 
   defstruct [
     :address,

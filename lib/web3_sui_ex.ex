@@ -1,6 +1,6 @@
-defmodule Web3MoveEx do
+defmodule Web3SuiEx do
   @moduledoc """
-  Documentation for `Web3MoveEx`.
+  Documentation for `Web3SuiEx`.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule Web3MoveEx do
 
   ## Examples
 
-      iex> Web3MoveEx.hello()
+      iex> Web3SuiEx.hello()
       :world
 
   """

@@ -1,5 +1,5 @@
-defmodule Web3MoveEx.Sui.Bcs.GasData do
-  import Web3MoveEx.Sui.Bcs.Builder
+defmodule Web3SuiEx.Sui.Bcs.GasData do
+  import Web3SuiEx.Sui.Bcs.Builder
 
   @derive {Bcs.Struct,
            [

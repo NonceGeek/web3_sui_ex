@@ -1,8 +1,8 @@
-defmodule Web3MoveEx.Sui.Bcs.ProgammableMoveCall do
+defmodule Web3SuiEx.Sui.Bcs.ProgammableMoveCall do
   @moduledoc false
-  alias Web3MoveEx.Sui.Bcs.TypeTag
-  alias Web3MoveEx.Sui.Bcs.Argument
-  import Web3MoveEx.Sui.Bcs.Builder
+  alias Web3SuiEx.Sui.Bcs.TypeTag
+  alias Web3SuiEx.Sui.Bcs.Argument
+  import Web3SuiEx.Sui.Bcs.Builder
 
   @derive {Bcs.Struct,
            [

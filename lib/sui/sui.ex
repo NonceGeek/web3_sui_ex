@@ -1,16 +1,16 @@
-defmodule Web3MoveEx.Sui do
-  alias Web3MoveEx.Sui.RPC
+defmodule Web3SuiEx.Sui do
+  alias Web3SuiEx.Sui.RPC
   @moduledoc false
   @type key_schema() :: atom()
   @type phrase() :: String.t()
   @type priv() :: String.t()
   @type sui_address() :: String.t()
-  # alias Web3MoveEx.Sui.Bcs.TransactionKind.ObjectRef
-  alias Web3MoveEx.Sui.Bcs.IntentMessage
-  alias Web3MoveEx.Sui.Bcs.IntentMessage.Intent
+  # alias Web3SuiEx.Sui.Bcs.TransactionKind.ObjectRef
+  alias Web3SuiEx.Sui.Bcs.IntentMessage
+  alias Web3SuiEx.Sui.Bcs.IntentMessage.Intent
 
   def gen_acct(key_schema \\ :ed25519) do
-    Web3MoveEx.Sui.Account.new(Atom.to_string(key_schema))
+    Web3SuiEx.Sui.Account.new(Atom.to_string(key_schema))
   end
 
   def get_faucet(address_hex) do
@@ -109,7 +109,7 @@ defmodule Web3MoveEx.Sui do
 
   def unsafe_moveCall(
         client,
-        %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
+        %Web3SuiEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
         package_object_id,
         module,
         function,
@@ -208,7 +208,7 @@ defmodule Web3MoveEx.Sui do
 
   def unsafe_moveCall(
     client,
-    %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
+    %Web3SuiEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
     package_object_id,
     module,
     function,
@@ -229,20 +229,20 @@ defmodule Web3MoveEx.Sui do
         gas_budget
       )
 
-    flag = Bcs.encode(Web3MoveEx.Sui.Bcs.IntentMessage.Intent.default())
+    flag = Bcs.encode(Web3SuiEx.Sui.Bcs.IntentMessage.Intent.default())
     {:ok, signatures} = RPC.sign(account, flag <> :base64.decode(tx_bytes))
 
     client
     |> RPC.sui_executeTransactionBlock(
       tx_bytes,
       signatures,
-      Web3MoveEx.Sui.RPC.ExecuteTransactionRequestType.wait_for_local_execution()
+      Web3SuiEx.Sui.RPC.ExecuteTransactionRequestType.wait_for_local_execution()
     )
   end
 
   # def transfer(
   #       client,
-  #       %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
+  #       %Web3SuiEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
   #       object_id,
   #       gas,
   #       gas_budget,
@@ -252,9 +252,9 @@ defmodule Web3MoveEx.Sui do
   #   gas_price = client |> RPC.suix_getReferenceGasPrice()
 
   #   kind =
-  #     Web3MoveEx.Sui.Bcs.TransactionKind.transfer_object(recipient, object_ref(client, object_id))
+  #     Web3SuiEx.Sui.Bcs.TransactionKind.transfer_object(recipient, object_ref(client, object_id))
   #   transaction_data =
-  #     Web3MoveEx.Sui.Bcs.TransactionData.new(kind, sui_address_hex, gas, gas_budget, gas_price)
+  #     Web3SuiEx.Sui.Bcs.TransactionData.new(kind, sui_address_hex, gas, gas_budget, gas_price)
 
   #   intent_msg = %IntentMessage{intent: Intent.default(), data: {:v1, transaction_data}}
   #   client |> RPC.sui_executeTransactionBlock(account, intent_msg)

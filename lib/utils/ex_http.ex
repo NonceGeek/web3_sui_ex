@@ -1,6 +1,6 @@
 defmodule Utils.ExHttp do
   @retries 5
-  @default_user_agent "web3_move_ex"
+  @default_user_agent "web3_sui_ex"
 
   require Logger
 

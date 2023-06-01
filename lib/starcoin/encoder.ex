@@ -1,9 +1,9 @@
-defmodule Web3MoveEx.Starcoin.Encoder do
+defmodule Web3SuiEx.Starcoin.Encoder do
   @moduledoc """
   Encoder args
   """
 
-  alias Web3MoveEx.Starcoin.Address
+  alias Web3SuiEx.Starcoin.Address
 
   def encode(values, [:signer | rest]) do
     encode(values, rest)

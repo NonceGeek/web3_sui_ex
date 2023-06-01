@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Starcoin.Transaction.TransactionPayload do
+defmodule Web3SuiEx.Starcoin.Transaction.TransactionPayload do
   @moduledoc false
   alias __MODULE__.{Package, ScriptFunction}
 
@@ -12,7 +12,7 @@ defmodule Web3MoveEx.Starcoin.Transaction.TransactionPayload do
 
   defmodule ScriptFunction do
     @moduledoc false
-    alias Web3MoveEx.Starcoin.Transaction.TypeTag
+    alias Web3SuiEx.Starcoin.Transaction.TypeTag
 
     @derive {Bcs.Struct,
              [
@@ -39,7 +39,7 @@ defmodule Web3MoveEx.Starcoin.Transaction.TransactionPayload do
                address: [:u8 | 16],
                modules: [Module],
                init_script: [
-                 Web3MoveEx.Starcoin.Transaction.TransactionPayload.ScriptFunction | nil
+                 Web3SuiEx.Starcoin.Transaction.TransactionPayload.ScriptFunction | nil
                ]
              ]}
 

@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Crypto do
+defmodule Web3SuiEx.Crypto do
 
   def generate_priv(:hex) do
     "0x#{Base.encode16(generate_priv(), case: :lower)}"

@@ -1,10 +1,10 @@
-defmodule Web3MoveEx.Sui.Bcs.IntentMessage do
+defmodule Web3SuiEx.Sui.Bcs.IntentMessage do
   alias __MODULE__.Intent
   @moduledoc false
   @derive {Bcs.Struct,
            [
              intent: Intent,
-             data: Web3MoveEx.Sui.Bcs.TransactionData
+             data: Web3SuiEx.Sui.Bcs.TransactionData
            ]}
   defstruct [
     :intent,

@@ -1,14 +1,14 @@
-defmodule Web3MoveEx.Starcoin.Client do
+defmodule Web3SuiEx.Starcoin.Client do
   @moduledoc false
 
-  alias Web3MoveEx.Starcoin.Caller.Chain
+  alias Web3SuiEx.Starcoin.Caller.Chain
 
   defstruct [
     :endpoint,
     :chain_id
   ]
 
-  @local Web3MoveEx.Constant.endpoint(:local)
+  @local Web3SuiEx.Constant.endpoint(:local)
 
   def connect(endpoint \\ @local) do
     with {:ok, %{result: result}} <- Chain.get_id(endpoint) do

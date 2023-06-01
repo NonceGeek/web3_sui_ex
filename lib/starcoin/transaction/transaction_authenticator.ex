@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Starcoin.Transaction.TransactionAuthenticator do
+defmodule Web3SuiEx.Starcoin.Transaction.TransactionAuthenticator do
   @moduledoc false
 
   use Bcs.TaggedEnum, [

@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.HTTP do
+defmodule Web3SuiEx.HTTP do
   @moduledoc """
   http behaviour && get default impl
   """
@@ -25,7 +25,7 @@ defmodule Web3MoveEx.HTTP do
             ) ::
               {:error, String.t()} | {:ok, any}
 
-  alias Web3MoveEx.HTTPImpl
+  alias Web3SuiEx.HTTPImpl
 
   def json_rpc(method, param), do: http_impl().json_rpc(method, param)
 
@@ -41,6 +41,6 @@ defmodule Web3MoveEx.HTTP do
   def post(%{endpoint: url}, body, :urlencoded), do: http_impl().post(url, body, :urlencoded)
 
   defp http_impl() do
-    Application.get_env(:web3_move_ex, :http, HTTPImpl)
+    Application.get_env(:web3_sui_ex, :http, HTTPImpl)
   end
 end

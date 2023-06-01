@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Sui.Bcs.Builder do
+defmodule Web3SuiEx.Sui.Bcs.Builder do
   @moduledoc false
   def object_id, do: [:u8 | 32]
   def seq_number, do: :u64

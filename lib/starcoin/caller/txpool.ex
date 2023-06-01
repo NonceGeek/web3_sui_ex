@@ -1,10 +1,10 @@
-defmodule Web3MoveEx.Starcoin.Caller.Txpool do
+defmodule Web3SuiEx.Starcoin.Caller.Txpool do
   @moduledoc """
   transaction namespace
   """
 
-  alias Web3MoveEx.HTTP
-  alias Web3MoveEx.Starcoin.Caller
+  alias Web3SuiEx.HTTP
+  alias Web3SuiEx.Starcoin.Caller
 
   @class "txpool"
 

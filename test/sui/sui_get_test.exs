@@ -1,13 +1,13 @@
-defmodule Web3MoveEx.SuiGetTest do
+defmodule Web3SuiEx.SuiGetTest do
   @moduledoc false
-  alias Web3MoveEx.Sui.RPC
-  alias Web3MoveEx.Sui
+  alias Web3SuiEx.Sui.RPC
+  alias Web3SuiEx.Sui
   use ExUnit.Case, async: true
   require Logger
 
   setup_all do
     {:ok, rpc} = RPC.connect(:devnet)
-    {:ok, %Web3MoveEx.Sui.Account{sui_address_hex: sui_address}} = Sui.gen_acct()
+    {:ok, %Web3SuiEx.Sui.Account{sui_address_hex: sui_address}} = Sui.gen_acct()
     %{rpc: rpc, address: sui_address}
   end
 

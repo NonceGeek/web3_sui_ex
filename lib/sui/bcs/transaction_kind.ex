@@ -1,5 +1,5 @@
-defmodule Web3MoveEx.Sui.Bcs.TransactionKind do
-  alias Web3MoveEx.Sui.Bcs.ProgrammableTransaction
+defmodule Web3SuiEx.Sui.Bcs.TransactionKind do
+  alias Web3SuiEx.Sui.Bcs.ProgrammableTransaction
   @moduledoc false
   use Bcs.TaggedEnum,
     programmable_transaction: ProgrammableTransaction
@@ -10,7 +10,7 @@ defmodule Web3MoveEx.Sui.Bcs.TransactionKind do
   #             programmable_transaction: ProgrammableTransaction
   def transfer_object(sui_address_hex, object_ref) do
     {:ok, sui_address} = :sui_nif.decode_pub(sui_address_hex)
-    bytes = Bcs.encode(sui_address, Web3MoveEx.Sui.Bcs.Builder.sui_address())
+    bytes = Bcs.encode(sui_address, Web3SuiEx.Sui.Bcs.Builder.sui_address())
     inputs = [{:pure, bytes}, {:object, {:imm_or_owned_object, object_ref}}]
     commands = [{:transfer_objects, {[{:input, 1}], {:input, 0}}}]
     %ProgrammableTransaction{inputs: inputs, commands: commands}
@@ -33,7 +33,7 @@ defmodule Web3MoveEx.Sui.Bcs.TransactionKind do
 
   def move_call(sui_address_hex, object_id, module, function, type_arguments, arguments) do
     # {:ok, sui_address} = :sui_nif.decode_pub(sui_address_hex)
-    # bytes = Bcs.encode(sui_address, Web3MoveEx.Sui.Bcs.Builder.sui_address)
+    # bytes = Bcs.encode(sui_address, Web3SuiEx.Sui.Bcs.Builder.sui_address)
     # inputs = [{:pure, bytes}, {:object, {:imm_or_owned_object, object_ref}}]
     # commands = [{:transfer_objects, {[{:input, 1}], {:input, 0}}}]
     # %ProgrammableTransaction{inputs: inputs, commands: commands}

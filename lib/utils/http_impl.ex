@@ -1,11 +1,11 @@
-defmodule Web3MoveEx.HTTPImpl do
+defmodule Web3SuiEx.HTTPImpl do
   @moduledoc """
   the encapsulation of http
   """
 
   require Logger
 
-  alias Web3MoveEx.HTTP
+  alias Web3SuiEx.HTTP
 
   @retries 5
   @behaviour HTTP

@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Constant do
+defmodule Web3SuiEx.Constant do
   @moduledoc false
 
   def endpoint(:local), do: "http://localhost:9851"

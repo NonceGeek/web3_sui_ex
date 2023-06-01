@@ -1,7 +1,7 @@
-defmodule Web3MoveEx.Sui.Bcs.ProgrammableTransaction do
+defmodule Web3SuiEx.Sui.Bcs.ProgrammableTransaction do
   @moduledoc false
-  alias Web3MoveEx.Sui.Bcs.CallArg
-  alias Web3MoveEx.Sui.Bcs.Command
+  alias Web3SuiEx.Sui.Bcs.CallArg
+  alias Web3SuiEx.Sui.Bcs.Command
 
   @derive {Bcs.Struct,
            [

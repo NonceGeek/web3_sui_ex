@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Starcoin.Parser do
+defmodule Web3SuiEx.Starcoin.Parser do
   @moduledoc false
 
   # TODO: detected the space between the params:
@@ -10,7 +10,7 @@ defmodule Web3MoveEx.Starcoin.Parser do
   end
 
   defp to_struct_tag(fields) do
-    struct(Web3MoveEx.Starcoin.Transaction.TypeTag.StructTag, fields)
+    struct(Web3SuiEx.Starcoin.Transaction.TypeTag.StructTag, fields)
   end
 
   space = ascii_string([?\s], min: 0) |> ignore()

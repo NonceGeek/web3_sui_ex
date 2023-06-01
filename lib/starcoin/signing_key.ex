@@ -1,9 +1,9 @@
-defmodule Web3MoveEx.Starcoin.SigningKey do
+defmodule Web3SuiEx.Starcoin.SigningKey do
   @moduledoc """
   An Ed25519 keypair.
   """
 
-  import Web3MoveEx.Starcoin.Helpers
+  import Web3SuiEx.Starcoin.Helpers
 
   defstruct [
     :private_key,

@@ -1,9 +1,9 @@
-defmodule Web3MoveEx.Sui.Bcs.V1 do
+defmodule Web3SuiEx.Sui.Bcs.V1 do
   @moduledoc false
-  alias Web3MoveEx.Sui.Bcs.TransactionKind
-  alias Web3MoveEx.Sui.Bcs.GasData
-  alias Web3MoveEx.Sui.Bcs.TransactionData.TransactionExpire
-  alias Web3MoveEx.Sui.Bcs.Builder
+  alias Web3SuiEx.Sui.Bcs.TransactionKind
+  alias Web3SuiEx.Sui.Bcs.GasData
+  alias Web3SuiEx.Sui.Bcs.TransactionData.TransactionExpire
+  alias Web3SuiEx.Sui.Bcs.Builder
 
   @derive {Bcs.Struct,
            [

@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Sui.Account do
+defmodule Web3SuiEx.Sui.Account do
   defstruct [
     :sui_address,
     :sui_address_hex,

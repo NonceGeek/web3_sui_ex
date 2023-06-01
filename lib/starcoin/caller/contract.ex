@@ -1,10 +1,10 @@
-defmodule Web3MoveEx.Starcoin.Caller.Contract do
+defmodule Web3SuiEx.Starcoin.Caller.Contract do
   @moduledoc """
   api about contract
   """
 
-  alias Web3MoveEx.HTTP
-  alias Web3MoveEx.Starcoin.Caller
+  alias Web3SuiEx.HTTP
+  alias Web3SuiEx.Starcoin.Caller
 
   @class "contract"
 
@@ -66,7 +66,7 @@ defmodule Web3MoveEx.Starcoin.Caller.Contract do
     0x01) func id could be built by `Caller.build_namespace`
     0x02) hex can be tranfered into starcoin_bytes in type_translator
     example:
-      Web3MoveEx.Caller.Contract.call_v2(
+      Web3SuiEx.Caller.Contract.call_v2(
         "http://localhost:9851",
         "0x1168e88ffc5cec53b398b42d61885bbb::EthSigVerifier::verify_eth_sig",
         [],
@@ -100,7 +100,7 @@ defmodule Web3MoveEx.Starcoin.Caller.Contract do
   ## Example
     # transfer token to another account
 
-    iex> Web3MoveEx.Starcoin.Caller.Contract.Web3MoveEx.Starcoin.Caller.Contract(0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2)
+    iex> Web3SuiEx.Starcoin.Caller.Contract.Web3SuiEx.Starcoin.Caller.Contract(0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2)
 
     [
   	{

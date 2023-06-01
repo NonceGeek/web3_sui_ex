@@ -1,4 +1,4 @@
-defmodule Web3MoveEx.Starcoin.Transaction.TypeTag do
+defmodule Web3SuiEx.Starcoin.Transaction.TypeTag do
   @moduledoc false
   use Bcs.TaggedEnum, [
     :bool,
@@ -19,7 +19,7 @@ defmodule Web3MoveEx.Starcoin.Transaction.TypeTag do
                address: [:u8 | 16],
                module: :string,
                name: :string,
-               type_args: [Web3MoveEx.Starcoin.Transaction.TypeTag]
+               type_args: [Web3SuiEx.Starcoin.Transaction.TypeTag]
              ]}
 
     defstruct [

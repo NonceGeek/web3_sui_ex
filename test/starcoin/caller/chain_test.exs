@@ -1,22 +1,22 @@
-defmodule Web3MoveEx.Starcoin.Caller.ChainTest do
+defmodule Web3SuiEx.Starcoin.Caller.ChainTest do
   @moduledoc false
 
   use ExUnit.Case, async: true
 
   import Mox
 
-  alias Web3MoveEx.Starcoin.Caller.Chain
+  alias Web3SuiEx.Starcoin.Caller.Chain
 
   setup :verify_on_exit!
 
   setup_all do
-    endpoint = Web3MoveEx.Constant.endpoint(:local)
+    endpoint = Web3SuiEx.Constant.endpoint(:local)
 
     %{endpoint: endpoint}
   end
 
   test "get_id", %{endpoint: endpoint} do
-    Web3MoveEx.HTTP.Mox
+    Web3SuiEx.HTTP.Mox
     |> expect(:json_rpc, fn method, id ->
       %{method: method, jsonrpc: "2.0", id: id}
     end)
@@ -31,7 +31,7 @@ defmodule Web3MoveEx.Starcoin.Caller.ChainTest do
   end
 
   test "get_info", %{endpoint: endpoint} do
-    Web3MoveEx.HTTP.Mox
+    Web3SuiEx.HTTP.Mox
     |> expect(:json_rpc, fn method, id ->
       %{method: method, jsonrpc: "2.0", id: id}
     end)
@@ -99,7 +99,7 @@ defmodule Web3MoveEx.Starcoin.Caller.ChainTest do
   end
 
   test "get_block_by_number", %{endpoint: endpoint} do
-    Web3MoveEx.HTTP.Mox
+    Web3SuiEx.HTTP.Mox
     |> expect(:json_rpc, fn method, id ->
       %{method: method, jsonrpc: "2.0", id: id}
     end)
@@ -168,7 +168,7 @@ defmodule Web3MoveEx.Starcoin.Caller.ChainTest do
 
   describe "Get Transaction" do
     test "return tx data if %{tx_hash} the is exists", %{endpoint: endpoint} do
-      Web3MoveEx.HTTP.Mox
+      Web3SuiEx.HTTP.Mox
       |> expect(:json_rpc, fn method, id ->
         %{method: method, jsonrpc: "2.0", id: id}
       end)
@@ -201,7 +201,7 @@ defmodule Web3MoveEx.Starcoin.Caller.ChainTest do
     end
 
     test "return error if %{tx_hash} is not exists", %{endpoint: endpoint} do
-      Web3MoveEx.HTTP.Mox
+      Web3SuiEx.HTTP.Mox
       |> expect(:json_rpc, fn method, id ->
         %{method: method, jsonrpc: "2.0", id: id}
       end)
@@ -219,7 +219,7 @@ defmodule Web3MoveEx.Starcoin.Caller.ChainTest do
 
   describe "Get Transaction Info" do
     test "return tx data if the %{tx_hash} is exists", %{endpoint: endpoint} do
-      Web3MoveEx.HTTP.Mox
+      Web3SuiEx.HTTP.Mox
       |> expect(:json_rpc, fn method, id ->
         %{method: method, jsonrpc: "2.0", id: id}
       end)
@@ -252,7 +252,7 @@ defmodule Web3MoveEx.Starcoin.Caller.ChainTest do
     end
 
     test "return nil if the %{tx_hash} is not exists", %{endpoint: endpoint} do
-      Web3MoveEx.HTTP.Mox
+      Web3SuiEx.HTTP.Mox
       |> expect(:json_rpc, fn method, id ->
         %{method: method, jsonrpc: "2.0", id: id}
       end)

@@ -1,8 +1,8 @@
-defmodule Web3MoveEx.Sui.RPC do
+defmodule Web3SuiEx.Sui.RPC do
   @moduledoc """
     Api Docs: https://docs.sui.io/sui-jsonrpc#sui_getObject
   """
-  alias Web3MoveEx.Sui.Bcs.IntentMessage
+  alias Web3SuiEx.Sui.Bcs.IntentMessage
 
   require Logger
 
@@ -79,7 +79,7 @@ defmodule Web3MoveEx.Sui.RPC do
       ) do
     bcs_bytes_to_sign = Bcs.encode(intent_msg)
     {:ok, signatures} = sign(signer, bcs_bytes_to_sign)
-    tx_bytes = Bcs.encode(value, Web3MoveEx.Sui.Bcs.TransactionData)
+    tx_bytes = Bcs.encode(value, Web3SuiEx.Sui.Bcs.TransactionData)
 
     sui_executeTransactionBlock(
       client,
@@ -132,19 +132,19 @@ defmodule Web3MoveEx.Sui.RPC do
 
   def unsafe_call(
         client,
-        %Web3MoveEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
+        %Web3SuiEx.Sui.Account{sui_address_hex: sui_address_hex} = account,
         method,
         params
       ) do
     {:ok, %{txBytes: tx_bytes}} = client |> call(method, [sui_address_hex | params])
-    flag = Bcs.encode(Web3MoveEx.Sui.Bcs.IntentMessage.Intent.default())
+    flag = Bcs.encode(Web3SuiEx.Sui.Bcs.IntentMessage.Intent.default())
     {:ok, signatures} = sign(account, flag <> :base64.decode(tx_bytes))
 
     case client
     |> sui_executeTransactionBlock(
       tx_bytes,
       signatures,
-      Web3MoveEx.Sui.RPC.ExecuteTransactionRequestType.wait_for_local_execution()
+      Web3SuiEx.Sui.RPC.ExecuteTransactionRequestType.wait_for_local_execution()
     ) do
       {:ok, %{effects: %{status: %{status: "success"}}}} = res->
       res
@@ -208,8 +208,8 @@ defmodule Web3MoveEx.Sui.RPC do
     )
   end
 
-  @spec sign(Web3MoveEx.Sui.Account, binary()) :: {:ok, list()} | :error
-  def sign(%Web3MoveEx.Sui.Account{priv_key_base64: priv_key_base64}, tx_bytes) do
+  @spec sign(Web3SuiEx.Sui.Account, binary()) :: {:ok, list()} | :error
+  def sign(%Web3SuiEx.Sui.Account{priv_key_base64: priv_key_base64}, tx_bytes) do
     :sui_nif.sign(tx_bytes, priv_key_base64)
   end
 

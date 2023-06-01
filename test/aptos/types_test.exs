@@ -1,5 +1,5 @@
-defmodule Web3MoveEx.Aptos.TypesTest do
+defmodule Web3SuiEx.Aptos.TypesTest do
   use ExUnit.Case
 
-  alias Web3MoveEx.Aptos.Types
+  alias Web3SuiEx.Aptos.Types
 end
